@@ -151,7 +151,7 @@
                 <div class="col-6">
                     <div class="input-group">
                         <label for="gstin">GSTIN</label>
-                        <input type="text" id="gstin" name="gstin" placeholder="Enter your gstin number" value="{{ old('gstin') }}">
+                        <input type="text" id="gstin" name="gstin" placeholder="Enter your gstin number" value="{{ old('gstin') }}" maxlength="15">
                         @error('gstin')
                         <span style="color: red;">{{$message}}</span>
                         @enderror
@@ -169,7 +169,7 @@
                 <div class="col-6">
                     <div class="input-group">
                         <label for="phone_number">Phone Number</label>
-                        <input type="text" id="phone_number" name="phone_number" placeholder="Enter your phone number" value="{{ old('phone_number') }}">
+                        <input type="text" id="phone_number" name="phone_number" placeholder="Enter your phone number" value="{{ old('phone_number') }}" maxlength="10">
                         @error('phone_number')
                         <span style="color: red;">{{$message}}</span>
                         @enderror

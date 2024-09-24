@@ -7,13 +7,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Q-Mart VMS - Admin Portal</title>
   <!-- base:css -->
-  <link rel="stylesheet" href="{{asset('assets/vendors/typicons/typicons.css')}}">
-  <link rel="stylesheet" href="{{asset('assets/vendors/css/vendor.bundle.base.css')}}">
+  <link rel="stylesheet" href="{{asset('public/assets/vendors/typicons/typicons.css')}}">
+  <link rel="stylesheet" href="{{asset('public/assets/vendors/css/vendor.bundle.base.css')}}">
   <!-- endinject -->
   <!-- inject:css -->
-  <link rel="stylesheet" href="{{asset('assets/css/vertical-layout-light/style.css')}}">
+  <link rel="stylesheet" href="{{asset('public/assets/css/vertical-layout-light/style.css')}}">
   <!-- endinject -->
-  <link rel="shortcut icon" href="{{asset('assets/upload/Q-Logo.png')}}" />
+  <link rel="shortcut icon" href="{{asset('public/assets/upload/Q-Logo.png')}}" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -1176,7 +1176,7 @@
 
   <script src="https://cdn.datatables.net/2.1.3/js/dataTables.js"></script>
 <script src="/DataTables/datatables.js"></script>
-  <script src="{{asset('assets/vendors/js/vendor.bundle.base.js')}}"></script>
+  <script src="{{asset('public/assets/vendors/js/vendor.bundle.base.js')}}"></script>
 
   
 <!-- jQuery -->
@@ -1195,11 +1195,11 @@
   <!-- Plugin js for this page-->
   <!-- End plugin js for this page-->
   <!-- inject:js -->
-  <script src="{{asset('assets/js/off-canvas.js')}}"></script>
-  <script src="{{asset('assets/js/hoverable-collapse.js')}}"></script>
-  <script src="{{asset('assets/js/template.js')}}"></script>
-  <script src="{{asset('assets/js/settings.js')}}"></script>
-  <script src="{{asset('assets/js/todolist.js')}}"></script>
+  <script src="{{asset('public/assets/js/off-canvas.js')}}"></script>
+  <script src="{{asset('public/assets/js/hoverable-collapse.js')}}"></script>
+  <script src="{{asset('public/assets/js/template.js')}}"></script>
+  <script src="{{asset('public/assets/js/settings.js')}}"></script>
+  <script src="{{asset('public/assets/js/todolist.js')}}"></script>
 
   <script>
    $(document).ready(function() {

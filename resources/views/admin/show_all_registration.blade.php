@@ -223,6 +223,129 @@
                                         </td>
                                     </tr>
                                 @endforeach
+                                @foreach ($innvoices as $item)
+                                    <!--<tr onclick="window.location='{{url('edit-request-report/'.$item->id)}}'" style="cursor:pointer;">-->
+                                    <tr onclick="window.location='{{url('edit-innvoice-message/'.$item->id)}}'" style="cursor:pointer;">
+                                        <!--<td></td>-->
+                                        <td>{{ \Carbon\Carbon::parse($item['created_at'])->format('Y-m-d') }}</td>
+                                        <td>{{ $item['vendor_name'] }}</td>
+                                        
+                                         <td>
+                                            {{$item->gst_number}}
+                                        </td>
+                                        <td>
+                                            {{ $item['description'] }}
+                                        </td>
+                                        <td>{{$item->subject}}</td>
+                                     
+                                          <td>
+                                            {{$item->approved_by}}
+                                        </td>
+                                        <td> 
+                                           <b>{{$item->status}}</b>
+
+                                            <!--@if ($item->status == 'Pending' && $item->description == 'Request Report')-->
+
+                                            <!--<a href="{{url('admin-reply/'.$item->id)}}" style="text-decoration: none; color:black;"><b>{{$item->status}}</b></a>-->
+
+                                            <!--@elseif($item->status == 'Approved' && $item->description == 'Request Report')-->
+
+                                            <!--<a href="{{url('admin-reply/'.$item->id)}}" style="text-decoration: none; color:black;"><b>{{$item->status}}</a></b>-->
+
+                                            <!--@elseif($item->status == 'Pending' && ($item->description == 'Vendor Registration' || $item->description == 'Sku Registration'))-->
+
+                                            <!--<a href="" class="btn-submit btn-pending"  data-toggle="modal" data-target="#updateModal{{ $item->id }}" style="text-decoration: none; color:black;"><b>{{ $item->status }}</b></a>-->
+
+                                            <!--@elseif($item->status == 'Approved' && ($item->description == 'Vendor Registration' || $item->description == 'Sku Registration'))-->
+
+                                            <!--<a href="" class="btn-submit btn-reply" style="text-decoration: none; color:black;"    data-toggle="modal" data-target="#updateModal{{ $item->id }}"><b>{{ $item->status }}</b></a>-->
+                                            <!--@endif-->
+
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                @foreach ($debits as $item)
+                                    <!--<tr onclick="window.location='{{url('edit-request-report/'.$item->id)}}'" style="cursor:pointer;">-->
+                                    <tr onclick="window.location='{{url('edit-debit-credit-message/'.$item->id)}}'" style="cursor:pointer;">
+                                        <!--<td></td>-->
+                                        <td>{{ \Carbon\Carbon::parse($item['created_at'])->format('Y-m-d') }}</td>
+                                        <td>{{ $item['vendor_name'] }}</td>
+                                        
+                                         <td>
+                                            {{$item->gst_number}}
+                                        </td>
+                                        <td>
+                                            {{ $item['description'] }}
+                                        </td>
+                                        <td>{{$item->subject}}</td>
+                                     
+                                          <td>
+                                            {{$item->approved_by}}
+                                        </td>
+                                        <td> 
+                                           <b>{{$item->status}}</b>
+
+                                            <!--@if ($item->status == 'Pending' && $item->description == 'Request Report')-->
+
+                                            <!--<a href="{{url('admin-reply/'.$item->id)}}" style="text-decoration: none; color:black;"><b>{{$item->status}}</b></a>-->
+
+                                            <!--@elseif($item->status == 'Approved' && $item->description == 'Request Report')-->
+
+                                            <!--<a href="{{url('admin-reply/'.$item->id)}}" style="text-decoration: none; color:black;"><b>{{$item->status}}</a></b>-->
+
+                                            <!--@elseif($item->status == 'Pending' && ($item->description == 'Vendor Registration' || $item->description == 'Sku Registration'))-->
+
+                                            <!--<a href="" class="btn-submit btn-pending"  data-toggle="modal" data-target="#updateModal{{ $item->id }}" style="text-decoration: none; color:black;"><b>{{ $item->status }}</b></a>-->
+
+                                            <!--@elseif($item->status == 'Approved' && ($item->description == 'Vendor Registration' || $item->description == 'Sku Registration'))-->
+
+                                            <!--<a href="" class="btn-submit btn-reply" style="text-decoration: none; color:black;"    data-toggle="modal" data-target="#updateModal{{ $item->id }}"><b>{{ $item->status }}</b></a>-->
+                                            <!--@endif-->
+
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                @foreach ($payments as $item)
+                                    <!--<tr onclick="window.location='{{url('edit-request-report/'.$item->id)}}'" style="cursor:pointer;">-->
+                                    <tr onclick="window.location='{{url('edit-payment-follow-message/'.$item->id)}}'" style="cursor:pointer;">
+                                        <!--<td></td>-->
+                                        <td>{{ \Carbon\Carbon::parse($item['created_at'])->format('Y-m-d') }}</td>
+                                        <td>{{ $item['vendor_name'] }}</td>
+                                        
+                                         <td>
+                                            {{$item->gst_number}}
+                                        </td>
+                                        <td>
+                                            {{ $item['description'] }}
+                                        </td>
+                                        <td>{{$item->subject}}</td>
+                                     
+                                          <td>
+                                            {{$item->approved_by}}
+                                        </td>
+                                        <td> 
+                                           <b>{{$item->status}}</b>
+
+                                            <!--@if ($item->status == 'Pending' && $item->description == 'Request Report')-->
+
+                                            <!--<a href="{{url('admin-reply/'.$item->id)}}" style="text-decoration: none; color:black;"><b>{{$item->status}}</b></a>-->
+
+                                            <!--@elseif($item->status == 'Approved' && $item->description == 'Request Report')-->
+
+                                            <!--<a href="{{url('admin-reply/'.$item->id)}}" style="text-decoration: none; color:black;"><b>{{$item->status}}</a></b>-->
+
+                                            <!--@elseif($item->status == 'Pending' && ($item->description == 'Vendor Registration' || $item->description == 'Sku Registration'))-->
+
+                                            <!--<a href="" class="btn-submit btn-pending"  data-toggle="modal" data-target="#updateModal{{ $item->id }}" style="text-decoration: none; color:black;"><b>{{ $item->status }}</b></a>-->
+
+                                            <!--@elseif($item->status == 'Approved' && ($item->description == 'Vendor Registration' || $item->description == 'Sku Registration'))-->
+
+                                            <!--<a href="" class="btn-submit btn-reply" style="text-decoration: none; color:black;"    data-toggle="modal" data-target="#updateModal{{ $item->id }}"><b>{{ $item->status }}</b></a>-->
+                                            <!--@endif-->
+
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     

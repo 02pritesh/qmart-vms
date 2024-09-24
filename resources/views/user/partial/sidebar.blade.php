@@ -42,7 +42,7 @@
         <a class="nav-link" data-toggle="" href="{{url('vendor-show-innvoices-detail')}}" aria-expanded="false"
               aria-controls="ui-basic">
               <i class="typcn typcn-document-text menu-icon"></i>
-              <span class="menu-title">Invoices & MRN</span>
+              <span class="menu-title">Innvoices & MRN</span>
               {{-- <i class="menu-arrow"></i> --}}
         </a>
     </li>

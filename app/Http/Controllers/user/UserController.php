@@ -382,7 +382,7 @@ class UserController extends Controller
             $errorMessage = $exception->getMessage();
             $shortMessage = strtok($errorMessage, '('); // This will truncate the message at the first '('
 
-            return redirect('vendor-show-request-report-registration-detail')->with('error', 'An error occurred: ' . $shortMessage);
+            return redirect()->back()->with('error', 'An error occurred: ' . $shortMessage);
         }
     }
 
@@ -510,7 +510,7 @@ class UserController extends Controller
 
 
     public function add_innvoices_mrn(Request $request){
-        try {
+        
                 $this->validate($request, [
                 'vendor_file' => 'nullable|mimes:pdf,png,jpg,xlsx,xls,zip|max:5120',
                 'subject' => 'nullable',
@@ -521,7 +521,7 @@ class UserController extends Controller
                     'vendor_file.*.max' => 'The vendor file size be less than 5MB'
                 ]);
 
-        
+        try {
             $data = new InnvoicesMrn();
 
             $data->user_id = session()->get('vendor_id');
@@ -553,11 +553,9 @@ class UserController extends Controller
             $errorMessage = $exception->getMessage();
             $shortMessage = strtok($errorMessage, '('); // This will truncate the message at the first '('
 
-            return redirect('vendor-show-request-report-registration-detail')->with('error', 'An error occurred: ' . $shortMessage);
+            return redirect()->back()->with('error', 'An error occurred: ' . $shortMessage);
         }
     }
-
-
 
 
 
@@ -609,6 +607,61 @@ class UserController extends Controller
         }
     }
 
+
+
+
+
+
+    public function vendor_innvoice_reply(Request $request){
+        
+
+            $this->validate(
+                $request,
+                [
+                    'vendor_message' => 'required',
+                    'vendor_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120',
+                    // 'admin_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120'
+                ],
+                [
+                    'vendor_file.*.mimes' => 'Invalid File Formate',
+                    // 'admin_file.*.mimes' => 'Invalid File Formate',
+                    'vendor_file.*.max' => 'The file size atleast 5MB',
+                    // 'admin_file.*.max' => 'The file size atleast 5MB',
+                ]
+            );
+        try{
+            $data = InnvoicesMrn::where('id', $request->id)->first();
+          
+            $data->vendor_message = $request->vendor_message;
+            $data->vendor_name = $request->vendor_name;
+    
+    
+    
+            if ($request->hasFile('vendor_file')) {
+                $data->vendor_file = $request->file('vendor_file')->getClientOriginalName();
+                $request->file('vendor_file')->move('public/assets/upload/innvoices', $data->vendor_file);
+            }
+
+            
+           
+            $result = $data->save();
+            if ($result) {
+                return redirect('vendor-show-innvoices-detail')->with('success', 'Data Sent Successfully!');
+            } else {
+                return redirect('vendor-show-innvoices-detail')->with('error', 'Data does not sent');
+            }
+
+        }catch(Exception $exception){
+            $message = $exception->getMessage();
+            $sortmessage = strtok($message,'(');
+
+            return redirect()->back()->with('error','An error occured: '.$sortmessage);
+        }
+    }
+
+
+    
+
 // -----------------------------------------End Innvoices MRN ------------------------------------
 
 
@@ -641,7 +694,7 @@ class UserController extends Controller
 
 
     public  function add_debit_credit_detail(Request $request){
-        try{
+        
             $this->validate($request, [
                 'vendor_file' => 'nullable|mimes:pdf,png,jpg,xlsx,xls,zip|max:5120',
                 'subject' => 'nullable',
@@ -652,7 +705,7 @@ class UserController extends Controller
                     'vendor_file.*.max' => 'The vendor file size be less than 5MB'
                 ]);
 
-        
+        try{
             $data = new DebitCredit();
 
             $data->user_id = session()->get('vendor_id');
@@ -736,6 +789,56 @@ class UserController extends Controller
     }
 
 
+
+    public function vendor_debit_reply(Request $request){
+
+
+            $this->validate(
+                $request,
+                [
+                    'vendor_message' => 'required',
+                    'vendor_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120',
+                    // 'admin_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120'
+                ],
+                [
+                    'vendor_file.*.mimes' => 'Invalid File Formate',
+                    // 'admin_file.*.mimes' => 'Invalid File Formate',
+                    'vendor_file.*.max' => 'The file size atleast 5MB',
+                    // 'admin_file.*.max' => 'The file size atleast 5MB',
+                ]
+            );
+        try{
+    
+            $data = DebitCredit::where('id', $request->id)->first();
+          
+            $data->vendor_message = $request->vendor_message;
+            $data->vendor_name = $request->vendor_name;
+    
+    
+    
+            if ($request->hasFile('vendor_file')) {
+                $data->vendor_file = $request->file('vendor_file')->getClientOriginalName();
+                $request->file('vendor_file')->move('public/assets/upload/debit', $data->vendor_file);
+            }
+
+            
+           
+            $result = $data->save();
+            if ($result) {
+                return redirect('vendor-show-credit-detail')->with('success', 'Data Sent Successfully!');
+            } else {
+                return redirect('vendor-show-credit-detail')->with('error', 'Data does not sent');
+            }
+
+        }catch(Exception $exception){
+            $message = $exception->getMessage();
+            $sortmessage = strtok($message,'(');
+
+            return redirect()->back()->with('error','An error occured: '.$sortmessage);
+        }
+    }
+
+
     // ----------------------------------------End Debit/Credit Note ----------------------------
 
 
@@ -772,7 +875,7 @@ class UserController extends Controller
 
 
     public function add_payment_follow(Request $request){
-        try{
+        
             $this->validate($request, [
                 'vendor_file' => 'nullable|mimes:pdf,png,jpg,xlsx,xls,zip|max:5120',
                 'subject' => 'nullable',
@@ -783,7 +886,7 @@ class UserController extends Controller
                     'vendor_file.*.max' => 'The vendor file size be less than 5MB'
                 ]);
 
-        
+        try{
             $data = new PaymentFollow();
 
             $data->user_id = session()->get('vendor_id');
@@ -862,6 +965,56 @@ class UserController extends Controller
             }else{
                 return redirect('/');
             }
+        }catch(Exception $exception){
+            $message = $exception->getMessage();
+            $sortmessage = strtok($message,'(');
+
+            return redirect()->back()->with('error','An error occured: '.$sortmessage);
+        }
+    }
+
+
+
+
+
+    public function vendor_payment_follow_reply(Request $request){
+        
+
+            $this->validate(
+                $request,
+                [
+                    'vendor_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120',
+                    'vendor_message' => 'required'
+                ],
+                [
+                    'vendor_file.*.mimes' => 'Invalid File Formate',
+                 
+                    'vendor_file.*.max' => 'The file size atleast 5MB',
+                  
+                ]
+            );
+        try{
+            $data = PaymentFollow::where('id', $request->id)->first();
+          
+            $data->vendor_message = $request->vendor_message;
+            $data->vendor_name = $request->vendor_name;
+    
+    
+    
+            if ($request->hasFile('vendor_file')) {
+                $data->vendor_file = $request->file('vendor_file')->getClientOriginalName();
+                $request->file('vendor_file')->move('public/assets/upload/payment', $data->vendor_file);
+            }
+
+            
+           
+            $result = $data->save();
+            if ($result) {
+                return redirect('vendor-show-payment-detail')->with('success', 'Data Sent Successfully!');
+            } else {
+                return redirect('vendor-show-payment-detail')->with('error', 'Data does not sent');
+            }
+
         }catch(Exception $exception){
             $message = $exception->getMessage();
             $sortmessage = strtok($message,'(');

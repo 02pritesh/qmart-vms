@@ -145,7 +145,7 @@
                 <div class="col-4">
                     <div class="form-group">
                       <label for="" class="mt-3"><b>City</b></label>
-                      <input type="text" class="form-control" id="entityName" name="postal_code" value="{{$vendorDetail->postal_code}}" readonly>
+                      <input type="text" class="form-control" id="entityName" name="postal_code" value="{{$vendorDetail->city}}" readonly>
                       @error('postal_code')
                       <span style="color: red">{{$message}}</span>
                       @enderror
@@ -348,7 +348,11 @@
                <div class="col-3">
                     <div class="form-group position-relative">
                         <label for="cancelledCheque"><b>Cancelled Cheque</b></label>
-                        <a href="{{ asset('public/assets/upload/' . $vendorDetail->cancelled_cheque) }}" class="btn-submit" style="text-decoration:none;" download>Download File</a>
+                        @if($vendorDetail->cancelled_cheque)
+                            <a href="{{ asset('public/assets/upload/' . $vendorDetail->cancelled_cheque) }}" class="btn-submit" style="text-decoration:none;" download>Download File</a>
+                        @else
+                            <p>no file uploaded</p>
+                        @endif
 
                     </div>
                 </div>
