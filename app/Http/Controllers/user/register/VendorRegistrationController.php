@@ -129,7 +129,7 @@ class VendorRegistrationController extends Controller
 
 public function add_vendor_registration(Request $request)
     {
-        try { // Validate the request
+         // Validate the request
             $this->validate($request, [
                 'subject' => 'required',
                 'vendor_name' => 'required|string',
@@ -139,6 +139,7 @@ public function add_vendor_registration(Request $request)
                 'contact_person1' => 'required|string',
                 'contact_person2' => 'required|string',
                 'gst_number' => 'required|string|size:15',
+                'email' => 'nullable|email',
                 // 'pan_number' => 'required|string|unique:vendor_registrations,pan_number|size:10',
                 'msme_number' => [
                     'nullable',
@@ -165,7 +166,6 @@ public function add_vendor_registration(Request $request)
                 'listing_charges' => 'required|string',
             ], [
                 'vendor_name.required' => 'The Vendor Name field is required.',
-                'email.required' => 'The Email field is required.',
                 'email.email' => 'The Email must be a valid email address.',
                 'mobile_number1.required' => 'The Mobile Number 1 field is required.',
                 // 'pan_number.size' => 'The PAN Number must be exactly 10 characters.',
@@ -177,7 +177,7 @@ public function add_vendor_registration(Request $request)
                 // Additional custom error messages
             ]);
 
-        
+        try {
             // Create a new VendorRegistration instance
             $data = new VendorRegistration();
             $data->subject = $request->subject;
@@ -227,7 +227,7 @@ public function add_vendor_registration(Request $request)
                 return redirect('vendor-show-vendor-registration-detail')->with('success', 'Vendor Registration Successfully!');
             }
         } catch (Exception $e) {
-            return redirect('vendor-show-vendor-registration-detail')->with('error', 'Failed to register vendor. Error: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Failed to register vendor. Error: ' . $e->getMessage());
         }
     }
 }

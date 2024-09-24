@@ -121,8 +121,8 @@
                              @if (in_array(pathinfo($messages->vendor_file, PATHINFO_EXTENSION), ['jpg', 'jpeg', 'png','bmp']))
                             
                                 <div id="vendorImagePreview">
-                                    <a href="{{ asset('public/assets/upload/debit' . $messages->vendor_file) }}" download>
-                                        <img src="{{ asset('public/assets/upload/debit' . $messages->vendor_file) }}" alt="Uploaded File" style="max-width: 8%; height: auto;">
+                                    <a href="{{ asset('public/assets/upload/debit/' . $messages->vendor_file) }}" download>
+                                        <img src="{{ asset('public/assets/upload/debit/' . $messages->vendor_file) }}" alt="Uploaded File" style="max-width: 8%; height: auto;">
                                     </a>
                                     <!--<input type="hidden" name="existing_vendor_file" value="{{ $messages->vendor_file }}">-->
                                 </div>
@@ -130,7 +130,7 @@
                             @elseif(in_array(pathinfo($messages->vendor_file, PATHINFO_EXTENSION), ['pdf','docx','doc','txt','xlsx','xls','zip']))
                         
                                 <div class="form-group">
-                                    <a href="{{ asset('public/assets/upload/debit' . $messages->vendor_file) }}" class="btn-submit" style="text-decoration:none;" download>Download File</a>
+                                    <a href="{{ asset('public/assets/upload/debit/' . $messages->vendor_file) }}" class="btn-submit" style="text-decoration:none;" download>Download File</a>
                                 </div>
                             @endif
                         
@@ -164,7 +164,9 @@
                     <label for=""><b>Message (maximum: 300 words)</b></label>
                     <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" name="admin_message"
                         placeholder="Write Your Message">{{ old('admin_message', $messages->admin_message) }}</textarea>
-                  
+                    @error('admin_message')
+                        <span style="color: red; font-size: 18px">{{ $message }}</span>
+                    @enderror
                 </div>
                 
                 <div class="form-group">
@@ -178,8 +180,8 @@
                             
                             @if (in_array(pathinfo($messages->admin_file, PATHINFO_EXTENSION), ['jpg', 'jpeg', 'png']))
                                 <div id="adminImagePreview">
-                                    <a href="{{ asset('public/assets/upload/debit' . $messages->admin_file) }}" download>
-                                        <img src="{{ asset('public/assets/upload/debit' . $messages->admin_file) }}" alt="Uploaded File" style="max-width: 8%; height: auto;">
+                                    <a href="{{ asset('public/assets/upload/debit/' . $messages->admin_file) }}" download>
+                                        <img src="{{ asset('public/assets/upload/debit/' . $messages->admin_file) }}" alt="Uploaded File" style="max-width: 8%; height: auto;">
                                     </a>
                                    
                                 </div>
@@ -187,7 +189,7 @@
                             @elseif(in_array(pathinfo($messages->admin_file, PATHINFO_EXTENSION),['pdf','xlsx','xls','zip']))
                         
                                 <!-- Display file if it is not an image -->
-                                <a href="{{ asset('public/assets/upload/debit' . $messages->admin_file) }}" class="btn-submit mt-3" style="text-decoration:none; font-size:12px;" target="_blank" download>View Uploaded File</a>
+                                <a href="{{ asset('public/assets/upload/debit/' . $messages->admin_file) }}" class="btn-submit mt-3" style="text-decoration:none; font-size:12px;" target="_blank" download>View Uploaded File</a>
                             @endif
                             
                             

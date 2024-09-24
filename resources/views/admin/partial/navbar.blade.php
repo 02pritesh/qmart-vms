@@ -25,7 +25,7 @@
       background-color: rgb(153, 58, 44);
     }
     #payment{
-      background-color: rgb(84, 80, 81);
+      background-color: rgb(69, 110, 225);
     }
     #new_register:hover,#new_sku:hover,#request:hover,#innvoice:hover,#debit_credit:hover,#payment:hover{
         text-decoration: none;
@@ -104,7 +104,7 @@
    
     <div class="col-9 mt-1 mr-3">
         <div class="button d-flex justify-content-end gap-3">
-          <a href="{{url('innvoice-message')}}" id="innvoice">New Innvoices</a>
+          <a href="{{url('innvoice-message')}}" id="innvoice">New Innvoices/MRN</a>
           <a href="{{url('debit-credit-message')}}" id="debit_credit">New Debit/Credit Note</a>
           <a href="{{url('payment-follow-message')}}" id="payment">New Payment Follow-up</a>
         </div>

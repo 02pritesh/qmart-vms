@@ -98,6 +98,7 @@
                                     <th scope="col">Subject</th>
                                     <th scope="col">Replied By</th>
                                     <th scope="col">Status</th>
+                                    <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -133,6 +134,9 @@
                                             <!--@endif-->
                                             <b>{{$item->status}}</b>
 
+                                        </td>
+                                        <td>
+                                            <a href="{{url('delete-sku-vendor-entity-detail/'.$item->id)}}" class="btn-pending btn-submit" onclick="return confirmDelete()"><i class="fa-solid fa-trash-can"></i></a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -197,6 +201,9 @@
         $('#error-message').fadeOut('fast');
     }, 4000);
 
+    function confirmDelete(){
+        return confirm('Are you sure, You want to delete Sku registration!!');
+    }
 
 </script>
 

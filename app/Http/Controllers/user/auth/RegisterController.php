@@ -84,15 +84,19 @@ class RegisterController extends Controller
         $vendor = VendorRegistration::where('user_id',$data->id)->first();
         
         $data->vendor_name = $request->vendor_name;
-        // $data->email = $request->email;
+        
         $data->gstin = $request->gstin;
-        $vendor->gst_number = $request->gstin;
+        if($vendor){
+            $vendor->gst_number = $request->gstin;
+        }
         $data->contact_person = $request->contact_person;
         $data->phone_number = $request->phone_number;
         $data->brands = $request->brands;
-        // dd($data);
+      
         $result = $data->save();
-        $vendor->save();
+        if($vendor){
+            $vendor->save();
+        }
         if($result){
             return redirect('edit-user-registration')->with('success','User Registration Update Successfully!');
         }

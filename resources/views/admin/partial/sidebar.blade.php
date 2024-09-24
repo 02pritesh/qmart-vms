@@ -39,7 +39,7 @@
       <li class="nav-item">
         <a class="nav-link" data-toggle="" href="{{url('innvoice-mrn-detail')}}" aria-expanded="false"
             aria-controls="form-elements">
-            <i class="fa-regular fa-message mr-3"></i>
+            <i class="typcn typcn-document-text menu-icon"></i>
             <span class="menu-title">Innvoices & MRN</span>
             {{-- <i class="menu-arrow"></i> --}}
         </a>

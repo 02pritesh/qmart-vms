@@ -15,7 +15,7 @@
       background-color: rgb(19, 136, 58);
   }
   #new_sku{
-      background-color: rgb(45, 93, 207); 
+      background-color: rgb(95, 86, 86); 
   }
   #request{
     background-color: rgb(42, 86, 75);
@@ -27,7 +27,7 @@
     background-color: rgb(153, 58, 44);
   }
   #payment{
-    background-color: rgb(84, 80, 81);
+    background-color:rgb(69, 110, 225);
   }
   #new_register:hover,#new_sku:hover,#request:hover,#innvoice:hover,#debit_credit:hover,#payment:hover{
       text-decoration: none;

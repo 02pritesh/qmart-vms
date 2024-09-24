@@ -75,7 +75,7 @@ Route::get('innvoice-message',[AdminController::class,'innvoice_message']);
 Route::post('innvoice-message',[AdminController::class,'add_innvoice_message']);
 Route::get('edit-innvoice-message/{id}',[AdminController::class,'edit_innvoice_message']);
 Route::post('edit-innvoice-message',[AdminController::class,'update_innvoice_message']);
-
+Route::get('delete-innvoice-mrn-reply/{id}',[AdminController::class,'delete_innvoice_mrn_reply']);
 
 Route::get('/get-gstin',[AdminController::class,'get_gstin']);
 
@@ -92,7 +92,7 @@ Route::get('debit-credit-message',[AdminController::class,'debit_credit_message'
 Route::post('debit-credit-message',[AdminController::class,'add_debit_credit_message']);
 Route::get('edit-debit-credit-message/{id}',[AdminController::class,'edit_debit_credit_message']);
 Route::post('edit-debit-credit-message',[AdminController::class,'update_debit_credit_message']);
-
+Route::get('delete-debit-credit-reply/{id}',[AdminController::class,'delete_debit_credit_reply']);
 
 // ------------------------------------------- Payment Follow-Up -------------------------------------------
 
@@ -101,6 +101,7 @@ Route::get('payment-follow-message',[AdminController::class,'payment_follow_mess
 Route::post('payment-follow-message',[AdminController::class,'add_payment_follow_message']);
 Route::get('edit-payment-follow-message/{id}',[AdminController::class,'edit_payment_follow_message']);
 Route::post('edit-payment-follow-message',[AdminController::class,'update_payment_follow_message']);
+Route::get('delete-payment-follow-reply/{id}',[AdminController::class,'delete_payment_follow_reply']);
 
 
 
@@ -168,6 +169,9 @@ Route::post('innvoices-mrn',[UserController::class,'add_innvoices_mrn']);
 Route::get('vendor-show-innvoices-detail',[UserController::class,'vendor_show_innvoices_detail']);
 Route::get('vendor-show-innvoices-message/{id}',[UserController::class,'vendor_show_innvoices_message']);
 
+Route::post('vendor-innvoice-reply',[UserController::class,'vendor_innvoice_reply']);
+
+
 // ------------------------------------ End Innvoice and MRN -----------------------------------
 
 
@@ -180,6 +184,9 @@ Route::get('debit-credit',[UserController::class,'debit_credit']);
 Route::post('debit-credit',[UserController::class,'add_debit_credit_detail']);
 Route::get('vendor-show-credit-detail',[UserController::class,'vendor_show_credit_detail']);
 Route::get('vendor-show-credit-message/{id}',[UserController::class,'vendor_show_credit_message']);
+
+Route::post('vendor-debit-reply',[UserController::class,'vendor_debit_reply']);
+
 
 // ------------------------------------ End Debit/Credit Note -----------------------------------
 
@@ -195,3 +202,4 @@ Route::post('payment-follow',[UserController::class,'add_payment_follow']);
 Route::get('vendor-show-payment-detail',[UserController::class,'vendor_show_payment_detail']);
 Route::get('vendor-show-payment-message/{id}',[UserController::class,'vendor_show_payment_message']);
 
+Route::post('vendor-payment-follow-reply',[UserController::class,'vendor_payment_follow_reply']);

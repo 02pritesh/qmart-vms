@@ -29,8 +29,11 @@ class AdminController extends Controller
             $users = VendorRegistration::orderBy('created_at', 'desc')->get();
             $skuRegistrations = SkuRegistration::orderBy('created_at', 'desc')->get();
             $requestReports = RequestReport::orderBy('created_at', 'desc')->get();
+            $innvoices = InnvoicesMrn::orderBy('created_at', 'desc')->get();
+            $debits = DebitCredit::orderBy('created_at', 'desc')->get();
+            $payments = PaymentFollow::orderBy('created_at', 'desc')->get();
 
-            return view('admin.show_all_registration', compact('users', 'skuRegistrations', 'requestReports'));
+            return view('admin.show_all_registration', compact('users', 'skuRegistrations', 'requestReports','innvoices','debits','payments'));
         } else {
             return redirect('/');
         }
@@ -90,9 +93,9 @@ class AdminController extends Controller
     public function delete_vendor_registration_detail($id)
     {
 
-        $vendorDetail = User::find($id);
+        $vendorDetail = VendorRegistration::find($id);
         $vendorDetail->delete();
-        return redirect('vendor-registration-detail',)->with('success', 'Vendor Registration details delete Successfully!!');
+        return redirect('vendor-registration-detail',)->with('success', 'Delete Vendor Registration Detail!!');
     }
 
 
@@ -116,8 +119,6 @@ class AdminController extends Controller
 
     public function update_vendor_registration_detail(Request $request)
     {
-        try {
-
             $this->validate(
                 $request,
                 [
@@ -128,6 +129,7 @@ class AdminController extends Controller
                     'cancelled_cheque.*.max' => 'The file size atleast 5MB',
                 ]
             );
+        try {
             $data = VendorRegistration::find($request->id);
             // $user = User::where('id',$vendor_id)->first();
 
@@ -184,9 +186,7 @@ class AdminController extends Controller
             $data->save();
 
             return redirect('vendor-registration-detail')->with('success', 'Vendor registration details Updated Successfully!');
-        } catch (\Exception $e) {
-            // Log the error if needed
-            \Log::error('Error updating vendor registration: ' . $e->getMessage());
+        } catch (Exception $e) {
 
             return redirect('vendor-registration-detail')->with('error', 'Vendor registration details update failed! Error: ' . $e->getMessage());
         }
@@ -306,9 +306,9 @@ class AdminController extends Controller
 
     public function delete_sku_vendor_entity_detail($id)
     {
-        $data = SkuVendorEntityNameDetail::find($id);
+        $data = SkuRegistration::find($id);
         if ($data->delete()) {
-            return redirect('registration-detail')->with('success', 'Delete Sku Vendor Entity Detail');
+            return redirect('registration-detail')->with('success', 'Delete Sku Registration Detail');
         }
     }
 
@@ -349,7 +349,7 @@ class AdminController extends Controller
     {
         $result = RequestReport::find($id);
         $result->delete();
-        return redirect('request-report-detail')->with('success', 'Delete Vendor reply messages');
+        return redirect('request-report-detail')->with('success', 'Delete Reconciliations Detail!!');
     }
 
 
@@ -480,7 +480,7 @@ class AdminController extends Controller
 
 
     public function add_innvoice_message(Request $request){
-        try{
+        
 
             $this->validate(
                 $request,
@@ -496,7 +496,7 @@ class AdminController extends Controller
                     'admin_file.*.max' => 'The file size atleast 5MB',
                 ]
             );
-
+        try{
             $message = new InnvoicesMrn();
             $vendor_name = User::where('id',$request->id)->first();
 
@@ -553,13 +553,14 @@ class AdminController extends Controller
 
 
     public function update_innvoice_message(Request $request){
-        try{
+        
 
             $this->validate(
                 $request,
                 [
                     'vendor_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120',
-                    'admin_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120'
+                    'admin_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120',
+                    'admin_message' => 'required',
                 ],
                 [
                     'vendor_file.*.mimes' => 'Invalid File Formate',
@@ -568,6 +569,7 @@ class AdminController extends Controller
                     'admin_file.*.max' => 'The file size atleast 5MB',
                 ]
             );
+        try{
     
             $data = InnvoicesMrn::where('id', $request->id)->first();
             // dd($data);
@@ -610,6 +612,15 @@ class AdminController extends Controller
 
             return redirect()->back()->with('error','An error occured: '.$sortmessage);
         }
+    }
+
+
+
+
+    public function delete_innvoice_mrn_reply($id){
+        $result = InnvoicesMrn::find($id);
+        $result->delete();
+        return redirect('innvoice-mrn-detail')->with('success', 'Delete Innvoice & MRN Detail!!');
     }
 
      
@@ -676,7 +687,7 @@ class AdminController extends Controller
 
 
     public function add_debit_credit_message(Request $request){
-        try{
+       
 
             $this->validate(
                 $request,
@@ -692,7 +703,7 @@ class AdminController extends Controller
                     'admin_file.*.max' => 'The file size atleast 5MB',
                 ]
             );
-
+        try{
             $message = new DebitCredit();
             $vendor_name = User::where('id',$request->id)->first();
 
@@ -751,13 +762,14 @@ class AdminController extends Controller
 
 
     public function update_debit_credit_message(Request $request){
-        try{
+       
 
             $this->validate(
                 $request,
                 [
                     'vendor_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120',
-                    'admin_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120'
+                    'admin_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120',
+                    'admin_message' => 'required',
                 ],
                 [
                     'vendor_file.*.mimes' => 'Invalid File Formate',
@@ -766,7 +778,7 @@ class AdminController extends Controller
                     'admin_file.*.max' => 'The file size atleast 5MB',
                 ]
             );
-    
+        try{
             $data = DebitCredit::where('id', $request->id)->first();
             // dd($data);
             $data->vendor_message = $request->vendor_message;
@@ -808,6 +820,14 @@ class AdminController extends Controller
 
             return redirect()->back()->with('error','An error occured: '.$sortmessage);
         }
+    }
+
+
+
+    public function delete_debit_credit_reply($id){
+        $result = DebitCredit::find($id);
+        $result->delete();
+        return redirect('debit-credit-detail')->with('success', 'Delete Debit/Credit Note Detail!!');
     }
 
 
@@ -870,7 +890,7 @@ class AdminController extends Controller
 
 
     public function add_payment_follow_message(Request $request){
-        try{
+        
 
             $this->validate(
                 $request,
@@ -886,6 +906,7 @@ class AdminController extends Controller
                     'admin_file.*.max' => 'The file size atleast 5MB',
                 ]
             );
+        try{
 
             $message = new PaymentFollow();
             $vendor_name = User::where('id',$request->id)->first();
@@ -943,13 +964,14 @@ class AdminController extends Controller
 
 
     public function update_payment_follow_message(Request $request){
-        try{
+        
 
             $this->validate(
                 $request,
                 [
                     'vendor_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120',
-                    'admin_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120'
+                    'admin_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120',
+                    'admin_message' => 'required',
                 ],
                 [
                     'vendor_file.*.mimes' => 'Invalid File Formate',
@@ -958,6 +980,7 @@ class AdminController extends Controller
                     'admin_file.*.max' => 'The file size atleast 5MB',
                 ]
             );
+        try{
     
             $data = PaymentFollow::where('id', $request->id)->first();
             // dd($data);
@@ -1002,6 +1025,13 @@ class AdminController extends Controller
         }
     }
 
+
+
+    public function delete_payment_follow_reply($id){
+        $result = PaymentFollow::find($id);
+        $result->delete();
+        return redirect('payment-follow-detail')->with('success', 'Delete Payment Follow-Up Detail!!');
+    }
 
 
 

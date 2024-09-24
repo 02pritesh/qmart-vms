@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('gstin')->nullable();
             $table->string('contact_person')->nullable();
             $table->string('phone_number')->nullable();
-            $table->integer('brands')->nullable();
+            $table->string('brands')->nullable();
             $table->string('status')->default('Active');
             $table->string('role')->default(0);
             $table->rememberToken();
