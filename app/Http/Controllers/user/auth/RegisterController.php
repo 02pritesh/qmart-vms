@@ -5,6 +5,7 @@ namespace App\Http\Controllers\user\auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\VendorRegistration;
+use Exception;
 use Illuminate\Http\Request;
 
 class RegisterController extends Controller
@@ -80,6 +81,7 @@ class RegisterController extends Controller
 
     public function update_user_registration(Request $request){
         
+      try{
         $data = User::find($request->id);
         $vendor = VendorRegistration::where('user_id',$data->id)->first();
         
@@ -103,5 +105,10 @@ class RegisterController extends Controller
         else{
             return redirect('edit-user-registration')->with('fail','Does not Update User Registration!');
         }
+      }catch(Exception $exception){
+        $message = $exception->getMessage();
+        $sortmessage = strtok($message,'(');
+        return redirect()->back()->with('error','An error occured: '.$sortmessage);
+      }
     }
 }
