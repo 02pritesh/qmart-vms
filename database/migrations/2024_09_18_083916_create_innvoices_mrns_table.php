@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('admin_message')->nullable(true);
             $table->string('vendor_file')->nullable(true);
             $table->string('admin_file')->nullable(true);
-            $table->string('description')->default('Innvoices & MRN');
+            $table->string('description')->default('Invoices/MRN');
             $table->string('approved_by')->nullable(true);
             $table->string('status')->default('Pending');
             $table->timestamps();

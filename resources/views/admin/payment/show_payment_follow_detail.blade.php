@@ -80,67 +80,49 @@
 
 <div class="container block mb-4 mt-3">
 
-    <div class="row mt-4" id="my Table">
+       <div class="row mt-4" id="my Table">
         <div class="col-md-12 mb-3">
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-striped" id="myTable">
-                            <thead>
-                                <tr>
-                                    <!--<th scope="col"></th>-->
-                                    <th scope="col">Date</th>
-                                    <th scope="col">Vendor Name</th>
-                                    <th scope="col">Type</th>
-                                    <th scope="col">Subject</th>
-                                    <th scope="col">Replied By</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php $i = 1; ?>
-                                
-                                @foreach ($messages as $item)
-                                    <tr onclick="window.location='{{url('edit-payment-follow-message/'.$item->id)}}'" style="cursor:pointer;">
-                                        <!--<td></td>-->
-                                        <td>{{ \Carbon\Carbon::parse($item['created_at'])->format('Y-m-d') }}</td>
-                                        <td>{{ $item['vendor_name'] }}</td>
-                                        <td>
-                                            {{ $item['description'] }}
-                                        </td>
-                                        <td> {{$item->subject}}</td>
-                                         <td> {{$item->approved_by}}</td>
-                                        <td>
-                                        
-                                            <!--@if ($item->status == 'Pending' && $item->description == 'Request Report')-->
-
-                                            <!--<a href="{{url('admin-reply/'.$item->id)}}" class="btn-submit btn-pending"><b>{{$item->status}}</b></a>-->
-
-                                            <!--@elseif($item->status == 'Replied' && $item->description == 'Request Report')-->
-
-                                            <!--<a href="{{url('admin-reply/'.$item->id)}}" class="btn-submit btn-reply"><b>{{$item->status}}</a></b>-->
-
-                                            <!--@elseif($item->status == 'Pending' && ($item->description == 'Vendor Registration' || $item->description == 'Sku Registration'))-->
-
-                                            <!--<a href="" class="btn-submit btn-pending"  data-toggle="modal" data-target="#updateModal{{ $item->id }}"><b>{{ $item->status }}</b></a>-->
-
-                                            <!--@elseif($item->status == 'Replied' && ($item->description == 'Vendor Registration' || $item->description == 'Sku Registration'))-->
-
-                                            <!--<a href="" class="btn-submit btn-reply"     data-toggle="modal" data-target="#updateModal{{ $item->id }}"><b>{{ $item->status }}</b></a>-->
-                                            <!--@endif-->
-                                            <b>{{$item->status}}</b>
-
-                                        </td>
-                                        <td>
-                                            <a href="{{url('delete-payment-follow-reply/'.$item->id)}}" class="btn-pending btn-submit" onclick="return confirmDelete()"><i class="fa-solid fa-trash-can"></i></a>
-                                        </td>
+                        <form id="deleteForm" method="POST" action="{{ route('delete-payment-follow-reply') }}">
+                        @csrf   
+                            <table class="table table-striped" id="myTable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Select</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Vendor Name</th>
+                                        <th scope="col">Type</th>
+                                        <th scope="col">Subject</th>
+                                        <th scope="col">Replied By</th>
+                                        <th scope="col">Status</th>
+                                        <!--<th scope="col">Action</th>-->
                                     </tr>
-                                @endforeach
-                                
-                            </tbody>
-                        </table>
-                    
+                                </thead>
+                                 <tbody>
+                                    @foreach ($messages as $item)
+                                        <tr onclick="window.location='{{url('edit-payment-follow-message/'.$item->id)}}'" style="cursor:pointer;">
+                                            <!-- Checkbox for selecting the row -->
+                                            <td>
+                                                <input type="checkbox" name="selected_ids[]" value="{{ $item->id }}" onclick="event.stopPropagation();">
+                                            </td>
+                                            <td>{{ \Carbon\Carbon::parse($item['created_at'])->format('Y-m-d') }}</td>
+                                            <td>{{ $item['vendor_name'] }}</td>
+                                            <td>{{ $item['description'] }}</td>
+                                            <td>{{ $item['subject'] }}</td>
+                                            <td>{{ $item['approved_by'] }}</td>
+                                            <td><b>{{ $item['status'] }}</b></td>
+                                            
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                             <!-- Button to trigger bulk delete -->
+                            <a href="javascript:void(0)" class="btn-pending btn-submit" onclick="deleteMultipleItems()">
+                                <i class="fa-solid fa-trash-can"></i> Delete Selected
+                            </a>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -186,8 +168,7 @@
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdn.datatables.net/2.1.3/js/dataTables.js"></script>
-<script src="/DataTables/datatables.js"></script>
+
 
 <script>
     setTimeout(function() {
@@ -199,8 +180,12 @@
     }, 4000);
 
 
-    function confirmDelete(){
-        return confirm('Are you sure, You want to delete Payment Follow-Up registration!!');
+    function deleteMultipleItems() {
+        // Confirm deletion action
+        if (confirm('Are you sure you want to delete the selected items?')) {
+            // Submit the form with the selected checkboxes
+            document.getElementById('deleteForm').submit();
+        }
     }
 
 

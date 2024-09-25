@@ -85,10 +85,11 @@
                                         <th scope="col">Vendor Name</th>
                                         <th scope="col">Email</th>
                                         <th scope="col">GSTIN</th>
-                                        <th scope="col">Contact Person</th>
-                                        <th scope="col">Phone Number</th>
+                                        <!--<th scope="col">Contact Person</th>-->
+                                        <!--<th scope="col">Phone Number</th>-->
                                         <th scope="col">Brands</th>
                                         <th scope="col">Status</th>
+                                        <th scope="col">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -101,8 +102,8 @@
                                        <td>{{ $item['vendor_name'] }}</td>
                                        <td>{{ $item['email'] }}</td>
                                        <td>{{ $item['gstin'] }}</td>
-                                       <td>{{ $item['contact_person'] }}</td>
-                                       <td>{{ $item['phone_number'] }}</td>
+                                       <!--<td>{{ $item['contact_person'] }}</td>-->
+                                       <!--<td>{{ $item['phone_number'] }}</td>-->
                                        <td>{{ $item['brands'] }}</td>
                                        <td >
                                            @if ($item->status == 'Active')
@@ -115,6 +116,9 @@
                                                </a>
                                            @endif
                                        </td>
+                                    <td>
+                                         <a href="{{url('edit-vendor-detail/'.$item->id)}}" class="btn-approved btn-submit"><i class="fa-solid fa-pen-to-square"></i></a>
+                                    </td>
                                    </tr>
                                    @endforeach
                                    

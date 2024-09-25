@@ -64,10 +64,10 @@
         $pageTitle = 'Sku Registration';
     } elseif (Request::is('request-report-detail')) {
         $pageTitle = 'Reconciliations';
-    } elseif (Request::is('innvoice-mrn-detail')) {
-        $pageTitle = 'Innvoices & MRN';
+    } elseif (Request::is('invoice-mrn-detail')) {
+        $pageTitle = 'Invoices/MRN';
     } elseif (Request::is('innvoice-message')) {
-        $pageTitle = 'Innvoices & MRN';
+        $pageTitle = 'Invoices/MRN';
     } elseif (Request::is('debit-credit-detail')) {
         $pageTitle = 'Debit/Credit Note';
     } elseif (Request::is('debit-credit-message')) {
@@ -78,6 +78,10 @@
         $pageTitle = 'Payment Follow-Up';
     } elseif (Request::is('vendor-show-message*')) {
         $pageTitle = 'Vendor Message';
+    } elseif (Request::is('innvoice-mrn-detail')) {
+        $pageTitle = 'Invoices/MRN';
+    }elseif (Request::is('edit-vendor-detail*')) {
+        $pageTitle = 'Edit Vendor Profile';
     } elseif (Request::is('add-sub-admin')) {
         $pageTitle = 'Add Sub-Admin';
     } elseif (Str::is('edit-vendor-registration-detail*', $currentPath)) {
@@ -89,7 +93,7 @@
     }elseif (Str::is('admin-reply*', $currentPath)) {
         $pageTitle = 'Reconciliations';
     }elseif (Str::is('edit-innvoice-message*', $currentPath)) {
-        $pageTitle = 'Innvoices & MRN';
+        $pageTitle = 'Invoices/MRN';
     }elseif (Str::is('edit-debit-credit-message*', $currentPath)) {
         $pageTitle = 'Debit/Credit Note';
     }elseif (Str::is('edit-payment-follow-message*', $currentPath)) {
@@ -104,7 +108,7 @@
    
     <div class="col-9 mt-1 mr-3">
         <div class="button d-flex justify-content-end gap-3">
-          <a href="{{url('innvoice-message')}}" id="innvoice">New Innvoices/MRN</a>
+          <a href="{{url('innvoice-message')}}" id="innvoice">New Invoice/MRN</a>
           <a href="{{url('debit-credit-message')}}" id="debit_credit">New Debit/Credit Note</a>
           <a href="{{url('payment-follow-message')}}" id="payment">New Payment Follow-up</a>
         </div>

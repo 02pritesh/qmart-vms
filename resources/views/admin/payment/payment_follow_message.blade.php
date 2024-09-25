@@ -81,16 +81,21 @@
                     </div>
                 </div>
 
-                <div class="col-3">
-                  <div class="form-group">
-                      <label for="inputState" class="mt-3"><b>Vendor Name</b></label>
-                      <select id="inputState" class="form-control" name="id">
-                          <option selected>Choose Name</option>
-                          @foreach ($details as $item)
-                              <option value="{{$item->id}}">{{ $item->vendor_name }}</option>
-                          @endforeach
-                      </select>
-                  </div>
+                 <div class="col-3">
+                    <div class="form-group">
+                        <label for="inputState" class="mt-3"><b>Vendor Name</b></label>
+                        <select id="inputState" class="form-control" name="vendor_name">
+                            <option value="" disabled {{ old('id') ? '' : 'selected' }}>Choose Name</option>
+                            @foreach ($details as $item)
+                                <option value="{{ $item->id }}" {{ old('id') == $item->id ? 'selected' : '' }}>
+                                    {{ $item->vendor_name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('vendor_name')
+                            <span style="color: red; font-size: 18px">{{ $message }}</span>
+                        @enderror
+                    </div>
                 </div>
                 
                 <div class="col-3">

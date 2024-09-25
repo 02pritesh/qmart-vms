@@ -68,7 +68,7 @@
     } elseif ($currentPath == 'vendor-show-request-report-registration-detail') {
         $pageTitle = 'Reconciliations';
     }elseif ($currentPath == 'vendor-show-innvoices-detail') {
-        $pageTitle = 'Innvoices & MRN';
+        $pageTitle = 'Invoices/MRN';
     } elseif ($currentPath == 'request-report') {
         $pageTitle = 'Reconciliations';
     }elseif ($currentPath == 'debit-credit') {
@@ -82,7 +82,7 @@
     } elseif ($currentPath == 'sku-registration') {
         $pageTitle = 'Sku Registration';
     } elseif ($currentPath == 'innvoices-mrn') {
-        $pageTitle = 'Innvoices & MRN';
+        $pageTitle = 'Invoices/MRN';
     } elseif ($currentPath == 'payment-follow') {
         $pageTitle = 'Payment Follow-Up';
     }elseif ($currentPath == 'vendor-show-payment-detail') {
@@ -95,7 +95,7 @@
     elseif (Str::is('show-sku-registration*', $currentPath)) {
         $pageTitle = 'Sku Registration';
     }elseif (Str::is('vendor-show-innvoices-message*', $currentPath)) {
-        $pageTitle = 'Innvoices & MRN';
+        $pageTitle = 'Invoices/MRN';
     }elseif (Str::is('vendor-show-credit-message*', $currentPath)) {
         $pageTitle = 'Debit/Credit Note';
     }elseif (Str::is('vendor-show-payment-message*', $currentPath)) {
@@ -134,7 +134,7 @@
         <a href="{{url('vendor-registration')}}"  id="new_register">New Vendor Registration</a>
         <a href="{{url('sku-registration')}}" id="new_sku">New SKU Registration</a>
         <a href="{{url('request-report')}}" id="request">New Reconciliations</a>
-        <a href="{{url('innvoices-mrn')}}" id="innvoice">New Innvoices</a>
+        <a href="{{url('innvoices-mrn')}}" id="innvoice">New Invoice/MRN</a>
         <a href="{{url('debit-credit')}}" id="debit_credit">New Debit/Credit Note</a>
         <a href="{{url('payment-follow')}}" id="payment">New Payment Follow-up</a>
       </div>

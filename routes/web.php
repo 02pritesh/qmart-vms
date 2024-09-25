@@ -38,10 +38,13 @@ Route::get('add-sub-admin',[AdminAuthController::class,'add_sub_admin']);
 Route::post('add-sub-admin',[AdminAuthController::class,'register_sub_admin']);
 
 
+Route::get('edit-vendor-detail/{id}',[AdminController::class,'edit_vendor_detail']);
+Route::post('edit-vendor-detail',[AdminController::class,'update_vendor_detail']);
+
 
 Route::get('registration-detail',[AdminController::class,'show_registration']);
 Route::get('vendor-registration-detail',[AdminController::class,'vendor_registration_detail']);
-Route::get('delete-vendor-registration-detail/{id}',[AdminController::class,'delete_vendor_registration_detail']);
+Route::post('delete-vendor-registration-detail',[AdminController::class,'delete_vendor_registration_detail'])->name('delete-vendor-registration-detail');
 Route::get('edit-vendor-registration-detail/{id}',[AdminController::class,'edit_vendor_registration_detail']);
 Route::post('edit-vendor-registration-detail',[AdminController::class,'update_vendor_registration_detail']);
 Route::get('edit-sku-registration-detail/{id}',[AdminController::class,'edit_sku_registration_detail']);
@@ -49,7 +52,7 @@ Route::post('edit-sku-registration-detail',[AdminController::class,'update_sku_r
 Route::get('edit-request-report/{id}',[AdminController::class,'edit_request_report']);
 Route::post('edit-request-report',[AdminController::class,'update_request_report']);
 Route::get('view-sku-vendor-entity-detail/{id}',[AdminController::class,'view_sku_vendor_entity_detail']);
-Route::get('delete-sku-vendor-entity-detail/{id}',[AdminController::class,'delete_sku_vendor_entity_detail']);
+Route::post('delete-sku-vendor-entity-detail',[AdminController::class,'delete_sku_vendor_entity_detail'])->name('delete-sku-vendor-entity-detail');
 
 
 // *********** this route for change status of vendor eighter activate or deactivate ***************
@@ -64,7 +67,7 @@ Route::post('update-message-status',[AdminController::class,'update_message_stat
 Route::get('request-report-detail',[AdminController::class,'show_request_report_detail']);
 Route::get('admin-reply/{id}',[AdminController::class,'admin_message_reply']);
 Route::post('admin-reply',[AdminController::class,'sent_admin_message']);
-Route::get('delete-vendor-reply/{id}',[AdminController::class,'delete_vendor_reply']);
+Route::post('delete-vendor-reply',[AdminController::class,'delete_vendor_reply'])->name('delete-vendor-reply');
 
 
 
@@ -75,7 +78,7 @@ Route::get('innvoice-message',[AdminController::class,'innvoice_message']);
 Route::post('innvoice-message',[AdminController::class,'add_innvoice_message']);
 Route::get('edit-innvoice-message/{id}',[AdminController::class,'edit_innvoice_message']);
 Route::post('edit-innvoice-message',[AdminController::class,'update_innvoice_message']);
-Route::get('delete-innvoice-mrn-reply/{id}',[AdminController::class,'delete_innvoice_mrn_reply']);
+Route::post('delete-innvoice-mrn-reply',[AdminController::class,'delete_innvoice_mrn_reply'])->name('delete-innvoice-mrn-reply');
 
 Route::get('/get-gstin',[AdminController::class,'get_gstin']);
 
@@ -92,7 +95,7 @@ Route::get('debit-credit-message',[AdminController::class,'debit_credit_message'
 Route::post('debit-credit-message',[AdminController::class,'add_debit_credit_message']);
 Route::get('edit-debit-credit-message/{id}',[AdminController::class,'edit_debit_credit_message']);
 Route::post('edit-debit-credit-message',[AdminController::class,'update_debit_credit_message']);
-Route::get('delete-debit-credit-reply/{id}',[AdminController::class,'delete_debit_credit_reply']);
+Route::post('delete-debit-credit-reply',[AdminController::class,'delete_debit_credit_reply'])->name('delete-debit-credit-reply');
 
 // ------------------------------------------- Payment Follow-Up -------------------------------------------
 
@@ -101,7 +104,7 @@ Route::get('payment-follow-message',[AdminController::class,'payment_follow_mess
 Route::post('payment-follow-message',[AdminController::class,'add_payment_follow_message']);
 Route::get('edit-payment-follow-message/{id}',[AdminController::class,'edit_payment_follow_message']);
 Route::post('edit-payment-follow-message',[AdminController::class,'update_payment_follow_message']);
-Route::get('delete-payment-follow-reply/{id}',[AdminController::class,'delete_payment_follow_reply']);
+Route::post('delete-payment-follow-reply',[AdminController::class,'delete_payment_follow_reply'])->name('delete-payment-follow-reply');
 
 
 

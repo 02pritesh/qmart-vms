@@ -85,17 +85,86 @@ class AdminController extends Controller
             return redirect('/');
         }
     }
+    
+    
+    public function edit_vendor_detail($id){
+        try{
+             if (session()->has('adminloginId')) {
+               
+               $data = User::find($id);
+                return view('admin.auth.edit_vendor_detail', compact('data'));
+                
+            } else {
+                return redirect('/');
+            }
+        }catch(Exception $exception){
+            $message = $exception->getMessage();
+            $sortmessage = strtok($message,'(');
+
+            return redirect()->back()->with('error','An error occured: '.$sortmessage);
+        }
+    }
+    
+    
+    
+    
+    public function update_vendor_detail(Request $request){
+        try{
+             if (session()->has('adminloginId')) {
+               
+                $data = User::find($request->id);
+                $vendor = VendorRegistration::where('user_id',$data->id)->first();
+                
+                $data->vendor_name = $request->vendor_name;
+                
+                $data->gstin = $request->gstin;
+                if($vendor){
+                    $vendor->gst_number = $request->gstin; 
+                }
+        
+                $data->contact_person = $request->contact_person;
+                $data->phone_number = $request->phone_number;
+                $data->brands = $request->brands;
+               
+                $result = $data->save();
+                if($vendor){
+                    $vendor->save();
+                }
+                if($result){
+                    return redirect('vendor-detail')->with('success','User Registration Update Successfully!');
+                }
+                else{
+                    return redirect('vendor-detail')->with('fail','Does not Update User Registration!');
+                }
+            } else {
+                return redirect('/');
+            }
+            
+        }catch(Exception $exception){
+            $message = $exception->getMessage();
+            $sortmessage = strtok($message,'(');
+
+            return redirect()->back()->with('error','An error occured: '.$sortmessage);
+        }
+    }
 
 
 
 
 
-    public function delete_vendor_registration_detail($id)
+    public function delete_vendor_registration_detail(Request $request)
     {
-
-        $vendorDetail = VendorRegistration::find($id);
-        $vendorDetail->delete();
-        return redirect('vendor-registration-detail',)->with('success', 'Delete Vendor Registration Detail!!');
+        // Validate that the selected_ids array is provided
+        $request->validate([
+            'selected_ids' => 'required|array',
+        ]);
+    
+        // Perform the deletion
+        VendorRegistration::whereIn('id', $request->selected_ids)->delete();
+    
+        // Redirect with success message
+        return redirect()->back()->with('success', 'Selected items have been deleted.');
+       
     }
 
 
@@ -345,11 +414,19 @@ class AdminController extends Controller
 
 
 
-    public function delete_vendor_reply($id)
+    public function delete_vendor_reply(Request $request)
     {
-        $result = RequestReport::find($id);
-        $result->delete();
-        return redirect('request-report-detail')->with('success', 'Delete Reconciliations Detail!!');
+        // Validate that the selected_ids array is provided
+        $request->validate([
+            'selected_ids' => 'required|array',
+        ]);
+    
+        // Perform the deletion
+        RequestReport::whereIn('id', $request->selected_ids)->delete();
+    
+        // Redirect with success message
+        return redirect()->back()->with('success', 'Selected items have been deleted.');
+        
     }
 
 
@@ -451,7 +528,7 @@ class AdminController extends Controller
                 $admin = session()->get('admin_id');
                 $admin = User::where('id',$admin)->first();
                
-                $details = User::where('role','!=',1)->where('role','!=',2)->get();
+                $details = User::where('role','!=',1)->where('role','!=',2)->where('status','=','Active')->get();
                 // dd($details);
                 return view('admin.innvoice.innvoice_message',compact('admin','details'));
 
@@ -486,10 +563,12 @@ class AdminController extends Controller
                 $request,
                 [
                     'admin_message' => 'required',
+                    'vendor_name' => 'required',
                     'subject' => 'nullable',
                     'admin_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120'
                 ],
                 [
+                    'vendor_name.*.required' =>'The Vendor name must be required',
                     // 'vendor_file.*.mimes' => 'Invalid File Formate',
                     'admin_file.*.mimes' => 'Invalid File Formate',
                     // 'vendor_file.*.max' => 'The file size atleast 5MB',
@@ -498,9 +577,9 @@ class AdminController extends Controller
             );
         try{
             $message = new InnvoicesMrn();
-            $vendor_name = User::where('id',$request->id)->first();
-
-            $message->user_id = $request->id;
+            $vendor_name = User::where('id',$request->vendor_name)->first();
+            
+            $message->user_id = $request->vendor_name;
             $message->vendor_name = $vendor_name->vendor_name;
             $message->subject = $request->subject;
             $message->gst_number = $request->gst_number;
@@ -510,7 +589,7 @@ class AdminController extends Controller
                 $message->admin_file = $request->file('admin_file')->getClientOriginalName();
                 $request->file('admin_file')->move('public/assets/upload/innvoices', $message->admin_file);
             }
-
+            // dd($message);
             $message->save();
 
             if($message->save()){
@@ -617,10 +696,22 @@ class AdminController extends Controller
 
 
 
-    public function delete_innvoice_mrn_reply($id){
-        $result = InnvoicesMrn::find($id);
-        $result->delete();
-        return redirect('innvoice-mrn-detail')->with('success', 'Delete Innvoice & MRN Detail!!');
+    public function delete_innvoice_mrn_reply(Request $request){
+        
+        // Validate that the selected_ids array is provided
+        $request->validate([
+            'selected_ids' => 'required|array',
+        ]);
+    
+        // Perform the deletion
+        InnvoicesMrn::whereIn('id', $request->selected_ids)->delete();
+    
+        // Redirect with success message
+        return redirect()->back()->with('success', 'Selected items have been deleted.');
+        
+        // $result = InnvoicesMrn::find($id);
+        // $result->delete();
+        // return redirect('innvoice-mrn-detail')->with('success', 'Delete Innvoice & MRN Detail!!');
     }
 
      
@@ -666,7 +757,7 @@ class AdminController extends Controller
                 $admin = session()->get('admin_id');
                 $admin = User::where('id',$admin)->first();
                
-                $details = User::where('role','!=',1)->where('role','!=',2)->get();
+                $details = User::where('role','!=',1)->where('role','!=',2)->where('status','=','Active')->get();
                 // dd($details);
                 return view('admin.debit.debit_credit_message',compact('admin','details'));
 
@@ -693,11 +784,12 @@ class AdminController extends Controller
                 $request,
                 [
                     'admin_message' => 'required',
+                    'vendor_name' => 'required',
                     'subject' => 'nullable',
                     'admin_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120'
                 ],
                 [
-                    // 'vendor_file.*.mimes' => 'Invalid File Formate',
+                    'vendor_name.*.required' => 'The vendor name must be required.',
                     'admin_file.*.mimes' => 'Invalid File Formate',
                     // 'vendor_file.*.max' => 'The file size atleast 5MB',
                     'admin_file.*.max' => 'The file size atleast 5MB',
@@ -705,9 +797,9 @@ class AdminController extends Controller
             );
         try{
             $message = new DebitCredit();
-            $vendor_name = User::where('id',$request->id)->first();
+            $vendor_name = User::where('id',$request->vendor_name)->first();
 
-            $message->user_id = $request->id;
+            $message->user_id = $request->vendor_name;
             $message->vendor_name = $vendor_name->vendor_name;
             $message->subject = $request->subject;
             $message->gst_number = $request->gst_number;
@@ -824,10 +916,20 @@ class AdminController extends Controller
 
 
 
-    public function delete_debit_credit_reply($id){
-        $result = DebitCredit::find($id);
-        $result->delete();
-        return redirect('debit-credit-detail')->with('success', 'Delete Debit/Credit Note Detail!!');
+    public function delete_debit_credit_reply(Request $request){
+        
+        // Validate that the selected_ids array is provided
+        $request->validate([
+            'selected_ids' => 'required|array',
+        ]);
+    
+        // Perform the deletion
+        DebitCredit::whereIn('id', $request->selected_ids)->delete();
+    
+        // Redirect with success message
+        return redirect()->back()->with('success', 'Selected items have been deleted.');
+        
+       
     }
 
 
@@ -870,7 +972,7 @@ class AdminController extends Controller
                 $admin = session()->get('admin_id');
                 $admin = User::where('id',$admin)->first();
                
-                $details = User::where('role','!=',1)->where('role','!=',2)->get();
+                $details = User::where('role','!=',1)->where('role','!=',2)->where('status','=','Active')->get();
                 // dd($details);
                 return view('admin.payment.payment_follow_message',compact('admin','details'));
 
@@ -896,6 +998,7 @@ class AdminController extends Controller
                 $request,
                 [
                     'admin_message' => 'required',
+                    'vendor_name' => 'required',
                     'subject' => 'nullable',
                     'admin_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120'
                 ],
@@ -909,9 +1012,9 @@ class AdminController extends Controller
         try{
 
             $message = new PaymentFollow();
-            $vendor_name = User::where('id',$request->id)->first();
+            $vendor_name = User::where('id',$request->vendor_name)->first();
 
-            $message->user_id = $request->id;
+            $message->user_id = $request->vendor_name;
             $message->vendor_name = $vendor_name->vendor_name;
             $message->subject = $request->subject;
             $message->gst_number = $request->gst_number;
@@ -1027,10 +1130,19 @@ class AdminController extends Controller
 
 
 
-    public function delete_payment_follow_reply($id){
-        $result = PaymentFollow::find($id);
-        $result->delete();
-        return redirect('payment-follow-detail')->with('success', 'Delete Payment Follow-Up Detail!!');
+    public function delete_payment_follow_reply(Request $request){
+        
+        // Validate that the selected_ids array is provided
+        $request->validate([
+            'selected_ids' => 'required|array',
+        ]);
+    
+        // Perform the deletion
+        PaymentFollow::whereIn('id', $request->selected_ids)->delete();
+    
+        // Redirect with success message
+        return redirect()->back()->with('success', 'Selected items have been deleted.');
+      
     }
 
 

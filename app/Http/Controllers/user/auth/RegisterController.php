@@ -5,7 +5,6 @@ namespace App\Http\Controllers\user\auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\VendorRegistration;
-use Exception;
 use Illuminate\Http\Request;
 
 class RegisterController extends Controller
@@ -29,25 +28,26 @@ class RegisterController extends Controller
         'regex:/[!@#$%^&*(),.?":{}|<>]/', // At least one special character
         'regex:/[0-9]/', // At least one number
     ],
-    "gstin" => [
-        "required",
-        "string",
-        "min:15",
-        "max:15",
-        "unique:users,gstin",
-        "regex:/^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{15}$/"
-    ],
+   "gstin" => [
+    "required",
+    "string",
+    "min:15",
+    "max:15",
+    "unique:users,gstin",
+    "regex:/^[0-9]{2}(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{13}$/"
+],
+
     "contact_person" => "required",
     "phone_number" => "required|min:10",
     "brands" => "required|string",
 ], [
     'password.regex' => 'The password must be at least 6 characters, contain no spaces, at least one special character, and one number.',
-    'gstin.required' => 'The GSTIN code is required.',
-    'gstin.string' => 'The GSTIN code must be a string.',
-    'gstin.min' => 'The GSTIN code must be exactly 15 characters.',
-    'gstin.max' => 'The GSTIN code must be exactly 15 characters.',
-    'gstin.unique' => 'The GSTIN Vendor Entity is already registered.',
-    'gstin.regex' => 'The GSTIN code must be exactly 15 characters long and contain both letters and numbers.',
+    'gstin.required' => 'The GSTIN is required.',
+    'gstin.string' => 'The GSTIN must be a string.',
+    'gstin.min' => 'The GSTIN must be exactly 15 characters long.',
+    'gstin.max' => 'The GSTIN must be exactly 15 characters long.',
+    'gstin.unique' => 'This GSTIN is already registered.',
+    'gstin.regex' => 'The GSTIN must start with two digits, followed by alphanumeric characters.',
 ]);
 
 
@@ -81,7 +81,6 @@ class RegisterController extends Controller
 
     public function update_user_registration(Request $request){
         
-      try{
         $data = User::find($request->id);
         $vendor = VendorRegistration::where('user_id',$data->id)->first();
         
@@ -89,12 +88,13 @@ class RegisterController extends Controller
         
         $data->gstin = $request->gstin;
         if($vendor){
-            $vendor->gst_number = $request->gstin;
+            $vendor->gst_number = $request->gstin; 
         }
+
         $data->contact_person = $request->contact_person;
         $data->phone_number = $request->phone_number;
         $data->brands = $request->brands;
-      
+       
         $result = $data->save();
         if($vendor){
             $vendor->save();
@@ -105,10 +105,5 @@ class RegisterController extends Controller
         else{
             return redirect('edit-user-registration')->with('fail','Does not Update User Registration!');
         }
-      }catch(Exception $exception){
-        $message = $exception->getMessage();
-        $sortmessage = strtok($message,'(');
-        return redirect()->back()->with('error','An error occured: '.$sortmessage);
-      }
     }
 }

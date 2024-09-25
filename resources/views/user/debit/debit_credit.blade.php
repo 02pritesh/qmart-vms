@@ -64,6 +64,7 @@
     @endif
 
     <!--<h3 class="text-center" style="color:#000;font-family: Silka-Black;"><b>Request Monthly Sales Report/Statement</b></h3>-->
+    <h3 class="text-center" style="color:#000;font-family: Silka-Black;"><b>Vendor Message</b></h3>
 
     <div class="container block mt-4 mb-4">
 
@@ -120,7 +121,7 @@
     </div>
 
 
-    <h3 class="text-center" style="color:#000;font-family: Silka-Black;"><b>Q-Mart Reply</b></h3>
+    <h3 class="text-center" style="color:#000;font-family: Silka-Black;"><b>Q-Mart Message</b></h3>
 
     <div class="container block mt-4 mb-4">
 
