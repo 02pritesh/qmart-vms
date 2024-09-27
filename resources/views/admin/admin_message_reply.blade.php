@@ -186,7 +186,9 @@
                     <label for=""><b>Message (maximum: 300 words)</b></label>
                     <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" name="admin_message"
                         placeholder="Write Your Message">{{ old('admin_message', $messages->admin_message) }}</textarea>
-                  
+                    @error('admin_message')
+                        <span style="color: red; font-size: 18px">{{ $message }}</span>
+                    @enderror
                 </div>
                 
                 <div class="form-group">

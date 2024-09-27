@@ -78,7 +78,7 @@
     <div class="container block mt-4 mb-4">
              <input type="hidden" name="id" value="{{ $messages->id }}">
             <div class="row">
-                <div class="col-6">
+                <div class="col-4">
                     <div class="form-group">
                         <p></p>
                         <!--<h6>Vendor Entity Name</h6>-->
@@ -86,21 +86,35 @@
                         <input type="hidden" name="id" value="{{ $messages->id }}">
     
                         <input type="text" class="form-control" id="entityName" value="{{ $messages->vendor_name }}"
-                            name="vendor_name" >
+                            name="vendor_name" readonly >
     
                     </div>
                 </div>
                 
-                 <div class="col-6">
+                <div class="col-4">
                     <div class="form-group">
-                        <label for="" class="mt-3"><b>Subject</b></label>
-                        <input type="text" class="form-control" id="entityName" name="subject"
-                             value="{{ $messages->subject }}">
-                        @error('subject')
+                        <label for="" class="mt-3"><b>Amount</b></label>
+                        <input type="number" class="form-control" id="entityName" name="vendor_amount"
+                               value="{{ old('vendor_amount', $messages->vendor_amount ?? '') }}" 
+                               placeholder="Enter Amount" step="0.01" onblur="formatAmount(this)">
+                        @error('vendor_amount')
                             <span style="color: red">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
+                
+                 <div class="col-4">
+                    <div class="form-group">
+                        <label for="" class="mt-3"><b>Document No (upto 40 character)</b></label>
+                        <input type="text" class="form-control" id="entityName" name="vendor_document"
+                             value="{{ $messages->vendor_document }}" maxlength="40">
+                        @error('vendor_document')
+                            <span style="color: red">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+                
+               
 
                 <div class="form-group">
                     <!--<h6>Message (maximum: 300 words)</h6>-->
@@ -161,6 +175,30 @@
     <div class="container block mt-4 mb-4">
 
             <div class="row">
+                
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="" class="mt-3"><b>Document No (upto 40 character)</b></label>
+                        <input type="text" class="form-control" id="entityName" name="admin_document"
+                             value="{{ $messages->admin_document }}" maxlength='40'>
+                        @error('admin_document')
+                            <span style="color: red">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+                
+                 <div class="col-6">
+                    <div class="form-group">
+                        <label for="" class="mt-3"><b>Amount</b></label>
+                        <input type="number" class="form-control" id="amount" name="admin_amount"
+                               value="{{ old('admin_amount', $messages->admin_amount ?? '') }}" 
+                               placeholder="Enter Amount" step="0.01" onblur="formatAmount(this)">
+                        @error('admin_amount')
+                            <span style="color: red">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+                
                 <div class="form-group pt-3">
                 
                     <label for=""><b>Message (maximum: 300 words)</b></label>
@@ -282,6 +320,15 @@
             newVendorImagePreview.innerHTML = ''; // Clear the preview if the selected file is not an image
         }
     });
+    
+    
+    function formatAmount(input) {
+        // Check if the input has a value
+        if (input.value) {
+            // Parse the value as a float and fix it to two decimal places
+            input.value = parseFloat(input.value).toFixed(2);
+        }
+    }
     
     
     </script>

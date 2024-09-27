@@ -236,7 +236,7 @@
                                         <td>
                                             {{ $item['description'] }}
                                         </td>
-                                        <td>{{$item->subject}}</td>
+                                        <td>{{$item->admin_document}}</td>
                                      
                                           <td>
                                             {{$item->approved_by}}
@@ -277,7 +277,7 @@
                                         <td>
                                             {{ $item['description'] }}
                                         </td>
-                                        <td>{{$item->subject}}</td>
+                                        <td>{{$item->admin_document}}</td>
                                      
                                           <td>
                                             {{$item->approved_by}}

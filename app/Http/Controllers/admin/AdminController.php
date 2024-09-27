@@ -13,7 +13,7 @@ use App\Models\User;
 use App\Models\VendorRegistration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Exception;
+use Exception; 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validate;
 
@@ -26,20 +26,14 @@ class AdminController extends Controller
     public function dashboard()
     {
         if (session()->has('adminloginId')) {
-            try {
-                $users = VendorRegistration::orderBy('created_at', 'desc')->get();
-                $skuRegistrations = SkuRegistration::orderBy('created_at', 'desc')->get();
-                $requestReports = RequestReport::orderBy('created_at', 'desc')->get();
-                $innvoices = InnvoicesMrn::orderBy('created_at', 'desc')->get();
-                $debits = DebitCredit::orderBy('created_at', 'desc')->get();
-                $payments = PaymentFollow::orderBy('created_at', 'desc')->get();
+            $users = VendorRegistration::orderBy('created_at', 'desc')->get();
+            $skuRegistrations = SkuRegistration::orderBy('created_at', 'desc')->get();
+            $requestReports = RequestReport::orderBy('created_at', 'desc')->get();
+            $innvoices = InnvoicesMrn::orderBy('created_at', 'desc')->get();
+            $debits = DebitCredit::orderBy('created_at', 'desc')->get();
+            $payments = PaymentFollow::orderBy('created_at', 'desc')->get();
 
-                return view('admin.show_all_registration', compact('users', 'skuRegistrations', 'requestReports', 'innvoices', 'debits', 'payments'));
-            } catch (Exception $exception) {
-                $message = $exception->getMessage();
-                $sortmessage = strtok($message, '(');
-                return redirect()->back()->with('error', 'An error occured: ' . $sortmessage);
-            }
+            return view('admin.show_all_registration', compact('users', 'skuRegistrations', 'requestReports','innvoices','debits','payments'));
         } else {
             return redirect('/');
         }
@@ -91,65 +85,66 @@ class AdminController extends Controller
             return redirect('/');
         }
     }
-
-
-    public function edit_vendor_detail($id)
-    {
-        try {
-            if (session()->has('adminloginId')) {
-
-                $data = User::find($id);
+    
+    
+    public function edit_vendor_detail($id){
+        try{
+             if (session()->has('adminloginId')) {
+               
+               $data = User::find($id);
                 return view('admin.auth.edit_vendor_detail', compact('data'));
+                
             } else {
                 return redirect('/');
             }
-        } catch (Exception $exception) {
+        }catch(Exception $exception){
             $message = $exception->getMessage();
-            $sortmessage = strtok($message, '(');
+            $sortmessage = strtok($message,'(');
 
-            return redirect()->back()->with('error', 'An error occured: ' . $sortmessage);
+            return redirect()->back()->with('error','An error occured: '.$sortmessage);
         }
     }
-
-
-
-
-    public function update_vendor_detail(Request $request)
-    {
-        try {
-            if (session()->has('adminloginId')) {
-
+    
+    
+    
+    
+    public function update_vendor_detail(Request $request){
+        try{
+             if (session()->has('adminloginId')) {
+               
                 $data = User::find($request->id);
-                $vendor = VendorRegistration::where('user_id', $data->id)->first();
-
+                $vendor = VendorRegistration::where('user_id',$data->id)->first();
+                
                 $data->vendor_name = $request->vendor_name;
-
+                
                 $data->gstin = $request->gstin;
-                if ($vendor) {
-                    $vendor->gst_number = $request->gstin;
+                if($vendor){
+                    $vendor->gst_number = $request->gstin; 
                 }
-
+        
                 $data->contact_person = $request->contact_person;
                 $data->phone_number = $request->phone_number;
                 $data->brands = $request->brands;
-
+               
                 $result = $data->save();
-                if ($vendor) {
+                if($vendor){
                     $vendor->save();
                 }
-                if ($result) {
-                    return redirect('vendor-detail')->with('success', 'User Registration Update Successfully!');
-                } else {
-                    return redirect('vendor-detail')->with('fail', 'Does not Update User Registration!');
+                if($result){
+                    return redirect('vendor-detail')->with('success','User Registration Update Successfully!');
+                }
+                else{
+                    return redirect('vendor-detail')->with('fail','Does not Update User Registration!');
                 }
             } else {
                 return redirect('/');
             }
-        } catch (Exception $exception) {
+            
+        }catch(Exception $exception){
             $message = $exception->getMessage();
-            $sortmessage = strtok($message, '(');
+            $sortmessage = strtok($message,'(');
 
-            return redirect()->back()->with('error', 'An error occured: ' . $sortmessage);
+            return redirect()->back()->with('error','An error occured: '.$sortmessage);
         }
     }
 
@@ -163,12 +158,13 @@ class AdminController extends Controller
         $request->validate([
             'selected_ids' => 'required|array',
         ]);
-
+    
         // Perform the deletion
         VendorRegistration::whereIn('id', $request->selected_ids)->delete();
-
+    
         // Redirect with success message
         return redirect()->back()->with('success', 'Selected items have been deleted.');
+       
     }
 
 
@@ -192,16 +188,16 @@ class AdminController extends Controller
 
     public function update_vendor_registration_detail(Request $request)
     {
-        $this->validate(
-            $request,
-            [
-                'cancelled_cheque' => 'nullable|mimes:pdf,png,jpg,xls,xlsx,zip|max:5120',
-            ],
-            [
-                'cancelled_cheque.*.mimes' => 'Invalid File Formate',
-                'cancelled_cheque.*.max' => 'The file size atleast 5MB',
-            ]
-        );
+            $this->validate(
+                $request,
+                [
+                    'cancelled_cheque' => 'nullable|mimes:pdf,png,jpg,xls,xlsx,zip|max:5120',
+                ],
+                [
+                    'cancelled_cheque.*.mimes' => 'Invalid File Formate',
+                    'cancelled_cheque.*.max' => 'The file size atleast 5MB',
+                ]
+            );
         try {
             $data = VendorRegistration::find($request->id);
             // $user = User::where('id',$vendor_id)->first();
@@ -313,7 +309,7 @@ class AdminController extends Controller
         $skuData->EAN_Code = $request->EAN_Code;
         $skuData->shelf_life = $request->shelf_life;
         $skuData->HSN_Code = $request->HSN_Code;
-
+    
         $skuData->cess = $request->cess;
         $skuData->cess_percentage = $request->cess_percentage;
         $skuData->additional_cess = $request->additional_cess;
@@ -347,7 +343,7 @@ class AdminController extends Controller
     }
 
 
-
+    
 
     public function update_request_report(Request $request)
     {
@@ -377,15 +373,23 @@ class AdminController extends Controller
 
 
 
-    public function delete_sku_vendor_entity_detail($id)
+    public function delete_sku_vendor_entity_detail(Request $request)
     {
-        $data = SkuRegistration::find($id);
-        if ($data->delete()) {
-            return redirect('registration-detail')->with('success', 'Delete Sku Registration Detail');
-        }
+         // Validate that the selected_ids array is provided
+        $request->validate([
+            'selected_ids' => 'required|array',
+        ]);
+    
+        // Perform the deletion
+        SkuRegistration::whereIn('id', $request->selected_ids)->delete();
+    
+        // Redirect with success message
+        return redirect()->back()->with('success', 'Selected items have been deleted.');
+        
+       
     }
 
-
+    
 
     public function show_request_report_detail()
     {
@@ -409,6 +413,7 @@ class AdminController extends Controller
 
             $messages = RequestReport::find($id);
             return view('admin.admin_message_reply', compact('messages'));
+
         } else {
             return redirect('/');
         }
@@ -423,12 +428,13 @@ class AdminController extends Controller
         $request->validate([
             'selected_ids' => 'required|array',
         ]);
-
+    
         // Perform the deletion
         RequestReport::whereIn('id', $request->selected_ids)->delete();
-
+    
         // Redirect with success message
         return redirect()->back()->with('success', 'Selected items have been deleted.');
+        
     }
 
 
@@ -441,7 +447,8 @@ class AdminController extends Controller
             $request,
             [
                 'vendor_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120',
-                'admin_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120'
+                'admin_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120',
+                'admin_message' => 'required',
             ],
             [
                 'vendor_file.*.mimes' => 'Invalid File Formate',
@@ -499,57 +506,58 @@ class AdminController extends Controller
 
     // ------------------------------------------------Innvoices & MRN -----------------------------------
 
-    public function show_innvoice_mrn_detail()
-    {
-
-        try {
+    public function show_innvoice_mrn_detail(){
+        
+        try{
             if (session()->has('adminloginId')) {
 
                 $messages = InnvoicesMrn::orderBy('created_at', 'desc')->get();
                 return view('admin.innvoice.show_innvoice_mrn_detail', compact('messages'));
+
             } else {
                 return redirect('/');
             }
-        } catch (Exception $exception) {
-            $message = $exception->getMessage();
-            $sortmessage = strtok($message, '(');
 
-            return redirect()->back()->with('error', 'An error occured: ' . $sortmessage);
+        }catch(Exception $exception){
+            $message = $exception->getMessage();
+            $sortmessage = strtok($message,'(');
+
+            return redirect()->back()->with('error','An error occured: '.$sortmessage);
         }
     }
 
 
 
 
-    public function innvoice_message()
-    {
-        try {
+    public function innvoice_message(){
+        try{
 
             if (session()->has('adminloginId')) {
 
                 $admin = session()->get('admin_id');
-                $admin = User::where('id', $admin)->first();
-
-                $details = User::where('role', '!=', 1)->where('role', '!=', 2)->where('status', '=', 'Active')->get();
+                $admin = User::where('id',$admin)->first();
+               
+                $details = User::where('role','!=',1)->where('role','!=',2)->where('status','=','Active')->get();
                 // dd($details);
-                return view('admin.innvoice.innvoice_message', compact('admin', 'details'));
+                return view('admin.innvoice.innvoice_message',compact('admin','details'));
+
             } else {
                 return redirect('/');
             }
-        } catch (Exception $exception) {
-            $message = $exception->getMessage();
-            $sortmessage = strtok($message, '(');
 
-            return redirect()->back()->with('error', 'An error occured: ' . $sortmessage);
+        }catch(Exception $exception){
+            $message = $exception->getMessage();
+            $sortmessage = strtok($message,'(');
+
+            return redirect()->back()->with('error','An error occured: '.$sortmessage);
         }
     }
 
 
 
 
-    public function get_gstin(Request $request)
-    {
-
+    public function get_gstin(Request $request){
+        
         $vendor = User::find($request->id); // Assuming your model is Vendor
         return response()->json(['gstin' => $vendor->gstin]);
     }
@@ -557,36 +565,38 @@ class AdminController extends Controller
 
 
 
-    public function add_innvoice_message(Request $request)
-    {
+    public function add_innvoice_message(Request $request){
+        
 
-
-        $this->validate(
-            $request,
-            [
-                'admin_message' => 'required',
-                'vendor_name' => 'required',
-                'subject' => 'nullable',
-                'admin_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120'
-            ],
-            [
-                'vendor_name.*.required' => 'The Vendor name must be required',
-                // 'vendor_file.*.mimes' => 'Invalid File Formate',
-                'admin_file.*.mimes' => 'Invalid File Formate',
-                // 'vendor_file.*.max' => 'The file size atleast 5MB',
-                'admin_file.*.max' => 'The file size atleast 5MB',
-            ]
-        );
-        try {
+            $this->validate(
+                $request,
+                [
+                    'admin_message' => 'required',
+                    'vendor_name' => 'required',
+                    'admin_document' => 'required|numeric',
+                    'admin_amount' => 'required|numeric',
+                    'admin_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120'
+                ],
+                [
+                    'vendor_name.*.required' =>'The Vendor name must be required',
+                    // 'vendor_file.*.mimes' => 'Invalid File Formate',
+                    'admin_file.*.mimes' => 'Invalid File Formate',
+                    // 'vendor_file.*.max' => 'The file size atleast 5MB',
+                    'admin_file.*.max' => 'The file size atleast 5MB',
+                ]
+            );
+        try{
             $message = new InnvoicesMrn();
-            $vendor_name = User::where('id', $request->vendor_name)->first();
-
+            $vendor_name = User::where('id',$request->vendor_name)->first();
+            
             $message->user_id = $request->vendor_name;
             $message->vendor_name = $vendor_name->vendor_name;
-            $message->subject = $request->subject;
+            $message->admin_document = $request->admin_document;
+            $message->admin_amount = $request->admin_amount;
             $message->gst_number = $request->gst_number;
             $message->admin_message = $request->admin_message;
-
+            $message->approved_by = $request->approved_by;
+            
             if ($request->hasFile('admin_file')) {
                 $message->admin_file = $request->file('admin_file')->getClientOriginalName();
                 $request->file('admin_file')->move('public/assets/upload/innvoices', $message->admin_file);
@@ -594,71 +604,76 @@ class AdminController extends Controller
             // dd($message);
             $message->save();
 
-            if ($message->save()) {
-                return redirect('innvoice-mrn-detail')->with('success', 'Data Sent Successfully!');
-            } else {
-                return redirect('innvoice-mrn-detail')->with('error', 'Data does not sent!');
+            if($message->save()){
+                return redirect('innvoice-mrn-detail')->with('success','Data Sent Successfully!');
+            }else{
+                return redirect('innvoice-mrn-detail')->with('error','Data does not sent!');
             }
-        } catch (Exception $exception) {
-            $message = $exception->getMessage();
-            $sortmessage = strtok($message, '(');
 
-            return redirect()->back()->with('error', 'An error occured: ' . $sortmessage);
+        }catch(Exception $exception){
+            $message = $exception->getMessage();
+            $sortmessage = strtok($message,'(');
+
+            return redirect()->back()->with('error','An error occured: '.$sortmessage);
         }
     }
 
 
 
 
-    public function edit_innvoice_message($id)
-    {
-        try {
+    public function edit_innvoice_message($id){
+        try{
             if (session()->has('adminloginId')) {
 
                 $messages = InnvoicesMrn::find($id);
-
+                
                 return view('admin.innvoice.edit_innvoice_message', compact('messages'));
+                
             } else {
                 return redirect('/');
             }
-        } catch (Exception $exception) {
+        }catch(Exception $exception){
             $message = $exception->getMessage();
-            $sortmessage = strtok($message, '(');
+            $sortmessage = strtok($message,'(');
 
-            return redirect()->back()->with('error', 'An error occured: ' . $sortmessage);
+            return redirect()->back()->with('error','An error occured: '.$sortmessage);
         }
     }
 
 
 
 
-    public function update_innvoice_message(Request $request)
-    {
+    public function update_innvoice_message(Request $request){
+        
 
-
-        $this->validate(
-            $request,
-            [
-                'vendor_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120',
-                'admin_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120',
-                'admin_message' => 'required',
-            ],
-            [
-                'vendor_file.*.mimes' => 'Invalid File Formate',
-                'admin_file.*.mimes' => 'Invalid File Formate',
-                'vendor_file.*.max' => 'The file size atleast 5MB',
-                'admin_file.*.max' => 'The file size atleast 5MB',
-            ]
-        );
-        try {
-
+            $this->validate(
+                $request,
+                [
+                    'vendor_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120',
+                    'admin_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120',
+                    'admin_message' => 'required',
+                    'admin_amount' => 'required|numeric',
+                    'admin_document' =>'required|numeric',
+                    'vendor_amount' => 'required|numeric',
+                    'vendor_document' =>'required|numeric',
+                ],
+                [
+                    'vendor_file.*.mimes' => 'Invalid File Formate',
+                    'admin_file.*.mimes' => 'Invalid File Formate',
+                    'vendor_file.*.max' => 'The file size atleast 5MB',
+                    'admin_file.*.max' => 'The file size atleast 5MB',
+                ]
+            );
+        try{
+    
             $data = InnvoicesMrn::where('id', $request->id)->first();
             // dd($data);
             $data->vendor_message = $request->vendor_message;
             $data->vendor_name = $request->vendor_name;
-            $data->subject = $request->subject;
-
-
+            $data->vendor_document = $request->vendor_document;
+            $data->vendor_amount = $request->vendor_amount;
+    
+    
             if ($request->hasFile('vendor_file')) {
                 $data->vendor_file = $request->file('vendor_file')->getClientOriginalName();
                 $request->file('vendor_file')->move('public/assets/upload/innvoices', $data->vendor_file);
@@ -670,13 +685,15 @@ class AdminController extends Controller
             if ($request->hasFile('existing_vendor_file') || $request->hasFile('existing_vendor_file')) {
                 // Retain the existing file path
                 $data->vendor_file = $request->input('existing_vendor_file');
-
+    
                 // Retain the existing file path
                 $data->admin_file = $request->input('existing_admin_file');
             }
-
+    
             $data->admin_message = $request->admin_message;
-
+            $data->admin_document = $request->admin_document;
+            $data->admin_amount = $request->admin_amount;
+    
             $data->status = 'Aligned';
             $data->approved_by = $request->approved_by;
             // dd($data);
@@ -686,39 +703,39 @@ class AdminController extends Controller
             } else {
                 return redirect('innvoice-mrn-detail')->with('error', 'Data does not sent');
             }
-        } catch (Exception $exception) {
-            $message = $exception->getMessage();
-            $sortmessage = strtok($message, '(');
 
-            return redirect()->back()->with('error', 'An error occured: ' . $sortmessage);
+        }catch(Exception $exception){
+            $message = $exception->getMessage();
+            $sortmessage = strtok($message,'(');
+
+            return redirect()->back()->with('error','An error occured: '.$sortmessage);
         }
     }
 
 
 
 
-    public function delete_innvoice_mrn_reply(Request $request)
-    {
-
+    public function delete_innvoice_mrn_reply(Request $request){
+        
         // Validate that the selected_ids array is provided
         $request->validate([
             'selected_ids' => 'required|array',
         ]);
-
+    
         // Perform the deletion
         InnvoicesMrn::whereIn('id', $request->selected_ids)->delete();
-
+    
         // Redirect with success message
         return redirect()->back()->with('success', 'Selected items have been deleted.');
-
+        
         // $result = InnvoicesMrn::find($id);
         // $result->delete();
         // return redirect('innvoice-mrn-detail')->with('success', 'Delete Innvoice & MRN Detail!!');
     }
 
+     
 
-
-    // ----------------------------------------------End Innvoices & MRN -----------------------------------
+   // ----------------------------------------------End Innvoices & MRN -----------------------------------
 
 
 
@@ -729,47 +746,49 @@ class AdminController extends Controller
 
 
 
-    public function show_debit_credit_detail()
-    {
-        try {
+    public function show_debit_credit_detail(){
+        try{
             if (session()->has('adminloginId')) {
 
                 $messages = DebitCredit::orderBy('created_at', 'desc')->get();
                 return view('admin.debit.show_debit_credit_detail', compact('messages'));
+
             } else {
                 return redirect('/');
             }
-        } catch (Exception $exception) {
-            $message = $exception->getMessage();
-            $sortmessage = strtok($message, '(');
 
-            return redirect()->back()->with('error', 'An error occured: ' . $sortmessage);
+        }catch(Exception $exception){
+            $message = $exception->getMessage();
+            $sortmessage = strtok($message,'(');
+
+            return redirect()->back()->with('error','An error occured: '.$sortmessage);
         }
     }
 
 
 
 
-    public function debit_credit_message()
-    {
-        try {
+    public function debit_credit_message(){
+        try{
 
             if (session()->has('adminloginId')) {
 
                 $admin = session()->get('admin_id');
-                $admin = User::where('id', $admin)->first();
-
-                $details = User::where('role', '!=', 1)->where('role', '!=', 2)->where('status', '=', 'Active')->get();
+                $admin = User::where('id',$admin)->first();
+               
+                $details = User::where('role','!=',1)->where('role','!=',2)->where('status','=','Active')->get();
                 // dd($details);
-                return view('admin.debit.debit_credit_message', compact('admin', 'details'));
+                return view('admin.debit.debit_credit_message',compact('admin','details'));
+
             } else {
                 return redirect('/');
             }
-        } catch (Exception $exception) {
-            $message = $exception->getMessage();
-            $sortmessage = strtok($message, '(');
 
-            return redirect()->back()->with('error', 'An error occured: ' . $sortmessage);
+        }catch(Exception $exception){
+            $message = $exception->getMessage();
+            $sortmessage = strtok($message,'(');
+
+            return redirect()->back()->with('error','An error occured: '.$sortmessage);
         }
     }
 
@@ -777,35 +796,37 @@ class AdminController extends Controller
 
 
 
-    public function add_debit_credit_message(Request $request)
-    {
+    public function add_debit_credit_message(Request $request){
+       
 
-
-        $this->validate(
-            $request,
-            [
-                'admin_message' => 'required',
-                'vendor_name' => 'required',
-                'subject' => 'nullable',
-                'admin_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120'
-            ],
-            [
-                'vendor_name.*.required' => 'The vendor name must be required.',
-                'admin_file.*.mimes' => 'Invalid File Formate',
-                // 'vendor_file.*.max' => 'The file size atleast 5MB',
-                'admin_file.*.max' => 'The file size atleast 5MB',
-            ]
-        );
-        try {
+            $this->validate(
+                $request,
+                [
+                    'admin_message' => 'required',
+                    'vendor_name' => 'required',
+                    'admin_document' => 'required|numeric',
+                    'admin_amount' => 'required|numeric',
+                    'admin_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120'
+                ],
+                [
+                    'vendor_name.*.required' => 'The vendor name must be required.',
+                    'admin_file.*.mimes' => 'Invalid File Formate',
+                    // 'vendor_file.*.max' => 'The file size atleast 5MB',
+                    'admin_file.*.max' => 'The file size atleast 5MB',
+                ]
+            );
+        try{
             $message = new DebitCredit();
-            $vendor_name = User::where('id', $request->vendor_name)->first();
+            $vendor_name = User::where('id',$request->vendor_name)->first();
 
             $message->user_id = $request->vendor_name;
             $message->vendor_name = $vendor_name->vendor_name;
-            $message->subject = $request->subject;
+             $message->admin_document = $request->admin_document;
+            $message->admin_amount = $request->admin_amount;
             $message->gst_number = $request->gst_number;
             $message->admin_message = $request->admin_message;
-
+            $message->approved_by = $request->approved_by;
+            
             if ($request->hasFile('admin_file')) {
                 $message->admin_file = $request->file('admin_file')->getClientOriginalName();
                 $request->file('admin_file')->move('public/assets/upload/debit', $message->admin_file);
@@ -813,16 +834,17 @@ class AdminController extends Controller
 
             $message->save();
 
-            if ($message->save()) {
-                return redirect('debit-credit-detail')->with('success', 'Data Sent Successfully!');
-            } else {
-                return redirect('debit-credit-detail')->with('error', 'Data does not sent!');
+            if($message->save()){
+                return redirect('debit-credit-detail')->with('success','Data Sent Successfully!');
+            }else{
+                return redirect('debit-credit-detail')->with('error','Data does not sent!');
             }
-        } catch (Exception $exception) {
-            $message = $exception->getMessage();
-            $sortmessage = strtok($message, '(');
 
-            return redirect()->back()->with('error', 'An error occured: ' . $sortmessage);
+        }catch(Exception $exception){
+            $message = $exception->getMessage();
+            $sortmessage = strtok($message,'(');
+
+            return redirect()->back()->with('error','An error occured: '.$sortmessage);
         }
     }
 
@@ -830,22 +852,22 @@ class AdminController extends Controller
 
 
 
-    public function edit_debit_credit_message($id)
-    {
-        try {
+    public function edit_debit_credit_message($id){
+        try{
             if (session()->has('adminloginId')) {
 
                 $messages = DebitCredit::find($id);
-
+                
                 return view('admin.debit.edit_debit_credit_message', compact('messages'));
+                
             } else {
                 return redirect('/');
             }
-        } catch (Exception $exception) {
+        }catch(Exception $exception){
             $message = $exception->getMessage();
-            $sortmessage = strtok($message, '(');
+            $sortmessage = strtok($message,'(');
 
-            return redirect()->back()->with('error', 'An error occured: ' . $sortmessage);
+            return redirect()->back()->with('error','An error occured: '.$sortmessage);
         }
     }
 
@@ -853,32 +875,37 @@ class AdminController extends Controller
 
 
 
-    public function update_debit_credit_message(Request $request)
-    {
+    public function update_debit_credit_message(Request $request){
+       
 
-
-        $this->validate(
-            $request,
-            [
-                'vendor_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120',
-                'admin_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120',
-                'admin_message' => 'required',
-            ],
-            [
-                'vendor_file.*.mimes' => 'Invalid File Formate',
-                'admin_file.*.mimes' => 'Invalid File Formate',
-                'vendor_file.*.max' => 'The file size atleast 5MB',
-                'admin_file.*.max' => 'The file size atleast 5MB',
-            ]
-        );
-        try {
+            $this->validate(
+                $request,
+                [
+                    'vendor_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120',
+                    'admin_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120',
+                    'admin_message' => 'required',
+                    'admin_amount' => 'required|numeric',
+                    'admin_document' =>'required|numeric',
+                    'vendor_amount' => 'required|numeric',
+                    'vendor_document' =>'required|numeric',
+                ],
+                [
+                    'vendor_file.*.mimes' => 'Invalid File Formate',
+                    'admin_file.*.mimes' => 'Invalid File Formate',
+                    'vendor_file.*.max' => 'The file size atleast 5MB',
+                    'admin_file.*.max' => 'The file size atleast 5MB',
+                ]
+            );
+        try{
             $data = DebitCredit::where('id', $request->id)->first();
             // dd($data);
             $data->vendor_message = $request->vendor_message;
             $data->vendor_name = $request->vendor_name;
-            $data->subject = $request->subject;
-
-
+            
+            $data->vendor_document = $request->vendor_document;
+            $data->vendor_amount = $request->vendor_amount;
+    
+    
             if ($request->hasFile('vendor_file')) {
                 $data->vendor_file = $request->file('vendor_file')->getClientOriginalName();
                 $request->file('vendor_file')->move('public/assets/upload/debit', $data->vendor_file);
@@ -890,13 +917,15 @@ class AdminController extends Controller
             if ($request->hasFile('existing_vendor_file') || $request->hasFile('existing_vendor_file')) {
                 // Retain the existing file path
                 $data->vendor_file = $request->input('existing_vendor_file');
-
+    
                 // Retain the existing file path
                 $data->admin_file = $request->input('existing_admin_file');
             }
-
+    
             $data->admin_message = $request->admin_message;
-
+            $data->admin_document = $request->admin_document;
+            $data->admin_amount = $request->admin_amount;
+    
             $data->status = 'Aligned';
             $data->approved_by = $request->approved_by;
             // dd($data);
@@ -906,29 +935,31 @@ class AdminController extends Controller
             } else {
                 return redirect('debit-credit-detail')->with('error', 'Data does not sent');
             }
-        } catch (Exception $exception) {
-            $message = $exception->getMessage();
-            $sortmessage = strtok($message, '(');
 
-            return redirect()->back()->with('error', 'An error occured: ' . $sortmessage);
+        }catch(Exception $exception){
+            $message = $exception->getMessage();
+            $sortmessage = strtok($message,'(');
+
+            return redirect()->back()->with('error','An error occured: '.$sortmessage);
         }
     }
 
 
 
-    public function delete_debit_credit_reply(Request $request)
-    {
-
+    public function delete_debit_credit_reply(Request $request){
+        
         // Validate that the selected_ids array is provided
         $request->validate([
             'selected_ids' => 'required|array',
         ]);
-
+    
         // Perform the deletion
         DebitCredit::whereIn('id', $request->selected_ids)->delete();
-
+    
         // Redirect with success message
         return redirect()->back()->with('success', 'Selected items have been deleted.');
+        
+       
     }
 
 
@@ -941,83 +972,85 @@ class AdminController extends Controller
     // ---------------------------------------------- Payment Follow-Up -----------------------------------
 
 
-    public function show_payment_follow_detail()
-    {
-        try {
+    public function show_payment_follow_detail(){
+        try{
 
             if (session()->has('adminloginId')) {
 
                 $messages = PaymentFollow::orderBy('created_at', 'desc')->get();
                 return view('admin.payment.show_payment_follow_detail', compact('messages'));
+
             } else {
                 return redirect('/');
             }
-        } catch (Exception $exception) {
-            $message = $exception->getMessage();
-            $sortmessage = strtok($message, '(');
 
-            return redirect()->back()->with('error', 'An error occured: ' . $sortmessage);
+        }catch(Exception $exception){
+            $message = $exception->getMessage();
+            $sortmessage = strtok($message,'(');
+
+            return redirect()->back()->with('error','An error occured: '.$sortmessage);
         }
     }
 
 
 
-    public function payment_follow_message()
-    {
-        try {
+    public function payment_follow_message(){
+        try{
 
             if (session()->has('adminloginId')) {
 
                 $admin = session()->get('admin_id');
-                $admin = User::where('id', $admin)->first();
-
-                $details = User::where('role', '!=', 1)->where('role', '!=', 2)->where('status', '=', 'Active')->get();
+                $admin = User::where('id',$admin)->first();
+               
+                $details = User::where('role','!=',1)->where('role','!=',2)->where('status','=','Active')->get();
                 // dd($details);
-                return view('admin.payment.payment_follow_message', compact('admin', 'details'));
+                return view('admin.payment.payment_follow_message',compact('admin','details'));
+
             } else {
                 return redirect('/');
             }
-        } catch (Exception $exception) {
-            $message = $exception->getMessage();
-            $sortmessage = strtok($message, '(');
 
-            return redirect()->back()->with('error', 'An error occured: ' . $sortmessage);
+        }catch(Exception $exception){
+            $message = $exception->getMessage();
+            $sortmessage = strtok($message,'(');
+
+            return redirect()->back()->with('error','An error occured: '.$sortmessage);
         }
     }
 
 
 
 
-    public function add_payment_follow_message(Request $request)
-    {
+    public function add_payment_follow_message(Request $request){
+        
 
-
-        $this->validate(
-            $request,
-            [
-                'admin_message' => 'required',
-                'vendor_name' => 'required',
-                'subject' => 'nullable',
-                'admin_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120'
-            ],
-            [
-                // 'vendor_file.*.mimes' => 'Invalid File Formate',
-                'admin_file.*.mimes' => 'Invalid File Formate',
-                // 'vendor_file.*.max' => 'The file size atleast 5MB',
-                'admin_file.*.max' => 'The file size atleast 5MB',
-            ]
-        );
-        try {
+            $this->validate(
+                $request,
+                [
+                    'admin_message' => 'required',
+                    'vendor_name' => 'required',
+                    'subject' => 'nullable',
+                    'admin_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120'
+                ],
+                [
+                    // 'vendor_file.*.mimes' => 'Invalid File Formate',
+                    'admin_file.*.mimes' => 'Invalid File Formate',
+                    // 'vendor_file.*.max' => 'The file size atleast 5MB',
+                    'admin_file.*.max' => 'The file size atleast 5MB',
+                ]
+            );
+        try{
 
             $message = new PaymentFollow();
-            $vendor_name = User::where('id', $request->vendor_name)->first();
+            $vendor_name = User::where('id',$request->vendor_name)->first();
 
             $message->user_id = $request->vendor_name;
             $message->vendor_name = $vendor_name->vendor_name;
             $message->subject = $request->subject;
             $message->gst_number = $request->gst_number;
             $message->admin_message = $request->admin_message;
-
+            $message->approved_by = $request->approved_by;
+            
             if ($request->hasFile('admin_file')) {
                 $message->admin_file = $request->file('admin_file')->getClientOriginalName();
                 $request->file('admin_file')->move('public/assets/upload/payment', $message->admin_file);
@@ -1025,71 +1058,71 @@ class AdminController extends Controller
 
             $message->save();
 
-            if ($message->save()) {
-                return redirect('payment-follow-detail')->with('success', 'Data Sent Successfully!');
-            } else {
-                return redirect('payment-follow-detail')->with('error', 'Data does not sent!');
+            if($message->save()){
+                return redirect('payment-follow-detail')->with('success','Data Sent Successfully!');
+            }else{
+                return redirect('payment-follow-detail')->with('error','Data does not sent!');
             }
-        } catch (Exception $exception) {
-            $message = $exception->getMessage();
-            $sortmessage = strtok($message, '(');
 
-            return redirect()->back()->with('error', 'An error occured: ' . $sortmessage);
+        }catch(Exception $exception){
+            $message = $exception->getMessage();
+            $sortmessage = strtok($message,'(');
+
+            return redirect()->back()->with('error','An error occured: '.$sortmessage);
         }
     }
 
 
 
 
-    public function edit_payment_follow_message($id)
-    {
-        try {
+    public function edit_payment_follow_message($id){
+        try{
             if (session()->has('adminloginId')) {
 
                 $messages = PaymentFollow::find($id);
-
+                
                 return view('admin.payment.edit_payment_follow_message', compact('messages'));
+                
             } else {
                 return redirect('/');
             }
-        } catch (Exception $exception) {
+        }catch(Exception $exception){
             $message = $exception->getMessage();
-            $sortmessage = strtok($message, '(');
+            $sortmessage = strtok($message,'(');
 
-            return redirect()->back()->with('error', 'An error occured: ' . $sortmessage);
+            return redirect()->back()->with('error','An error occured: '.$sortmessage);
         }
     }
 
 
 
 
-    public function update_payment_follow_message(Request $request)
-    {
+    public function update_payment_follow_message(Request $request){
+        
 
-
-        $this->validate(
-            $request,
-            [
-                'vendor_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120',
-                'admin_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120',
-                'admin_message' => 'required',
-            ],
-            [
-                'vendor_file.*.mimes' => 'Invalid File Formate',
-                'admin_file.*.mimes' => 'Invalid File Formate',
-                'vendor_file.*.max' => 'The file size atleast 5MB',
-                'admin_file.*.max' => 'The file size atleast 5MB',
-            ]
-        );
-        try {
-
+            $this->validate(
+                $request,
+                [
+                    'vendor_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120',
+                    'admin_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120',
+                    'admin_message' => 'required',
+                ],
+                [
+                    'vendor_file.*.mimes' => 'Invalid File Formate',
+                    'admin_file.*.mimes' => 'Invalid File Formate',
+                    'vendor_file.*.max' => 'The file size atleast 5MB',
+                    'admin_file.*.max' => 'The file size atleast 5MB',
+                ]
+            );
+        try{
+    
             $data = PaymentFollow::where('id', $request->id)->first();
             // dd($data);
             $data->vendor_message = $request->vendor_message;
             $data->vendor_name = $request->vendor_name;
             $data->subject = $request->subject;
-
-
+    
+    
             if ($request->hasFile('vendor_file')) {
                 $data->vendor_file = $request->file('vendor_file')->getClientOriginalName();
                 $request->file('vendor_file')->move('public/assets/upload/payment', $data->vendor_file);
@@ -1101,45 +1134,46 @@ class AdminController extends Controller
             if ($request->hasFile('existing_vendor_file') || $request->hasFile('existing_vendor_file')) {
                 // Retain the existing file path
                 $data->vendor_file = $request->input('existing_vendor_file');
-
+    
                 // Retain the existing file path
                 $data->admin_file = $request->input('existing_admin_file');
             }
-
+    
             $data->admin_message = $request->admin_message;
-
+    
             $data->status = 'Replied';
             $data->approved_by = $request->approved_by;
-
+            
             $result = $data->save();
             if ($result) {
                 return redirect('payment-follow-detail')->with('success', 'Data Sent Successfully!');
             } else {
                 return redirect('payment-follow-detail')->with('error', 'Data does not sent');
             }
-        } catch (Exception $exception) {
-            $message = $exception->getMessage();
-            $sortmessage = strtok($message, '(');
 
-            return redirect()->back()->with('error', 'An error occured: ' . $sortmessage);
+        }catch(Exception $exception){
+            $message = $exception->getMessage();
+            $sortmessage = strtok($message,'(');
+
+            return redirect()->back()->with('error','An error occured: '.$sortmessage);
         }
     }
 
 
 
-    public function delete_payment_follow_reply(Request $request)
-    {
-
+    public function delete_payment_follow_reply(Request $request){
+        
         // Validate that the selected_ids array is provided
         $request->validate([
             'selected_ids' => 'required|array',
         ]);
-
+    
         // Perform the deletion
         PaymentFollow::whereIn('id', $request->selected_ids)->delete();
-
+    
         // Redirect with success message
         return redirect()->back()->with('success', 'Selected items have been deleted.');
+      
     }
 
 
@@ -1235,4 +1269,14 @@ class AdminController extends Controller
             return redirect('all-vendor-registration')->with('success', 'Status Update Successfully');
         }
     }
+
+
+
+
+
+
+
+
+
+
 }

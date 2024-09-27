@@ -95,7 +95,7 @@
     elseif (Str::is('show-sku-registration*', $currentPath)) {
         $pageTitle = 'Sku Registration';
     }elseif (Str::is('vendor-show-innvoices-message*', $currentPath)) {
-        $pageTitle = 'Invoices/MRN';
+        $pageTitle = 'Update Invoices/MRN';
     }elseif (Str::is('vendor-show-credit-message*', $currentPath)) {
         $pageTitle = 'Debit/Credit Note';
     }elseif (Str::is('vendor-show-payment-message*', $currentPath)) {

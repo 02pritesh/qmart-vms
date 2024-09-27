@@ -123,6 +123,8 @@
                         <span style="color: red; font-size:18px">{{ $message }}</span>
                     @enderror
                 </div>   
+                
+                  <input type="hidden" class="form-control" id="entityName" name="approved_by" value="{{session()->get('admin_name')}}"  readonly>
 
             </div>
             <button type="submit" class="btn-submit btn-report mr-3 mb-3">Submit</button>

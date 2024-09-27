@@ -145,8 +145,14 @@ Route::post('add-vendor-registration',[VendorRegistrationController::class,'add_
 // Route::get('dashboard',[UserController::class,'dashboard']);
 Route::get('sku-registration',[UserController::class,'sku_registration']);
 Route::post('sku-registration',[UserController::class,'add_sku_registration']);
+
+Route::post('edit-sku-registration',[UserController::class,'edit_sku_registration']);
+
+
 Route::get('request-report',[UserController::class,'request_report']);
 Route::post('request-report',[UserController::class,'add_request_report']);
+
+Route::post('edit-request-report',[UserController::class,'edit_request_report']);
 
 
 Route::get('show-request-report',[UserController::class,'show_request_report']);
@@ -172,6 +178,8 @@ Route::post('innvoices-mrn',[UserController::class,'add_innvoices_mrn']);
 Route::get('vendor-show-innvoices-detail',[UserController::class,'vendor_show_innvoices_detail']);
 Route::get('vendor-show-innvoices-message/{id}',[UserController::class,'vendor_show_innvoices_message']);
 
+Route::post('edit-innvoices-mrn',[UserController::class,'edit_innvoices_mrn']);
+
 Route::post('vendor-innvoice-reply',[UserController::class,'vendor_innvoice_reply']);
 
 
@@ -188,6 +196,8 @@ Route::post('debit-credit',[UserController::class,'add_debit_credit_detail']);
 Route::get('vendor-show-credit-detail',[UserController::class,'vendor_show_credit_detail']);
 Route::get('vendor-show-credit-message/{id}',[UserController::class,'vendor_show_credit_message']);
 
+Route::post('edit-debit-note',[UserController::class,'edit_debit_note']);
+
 Route::post('vendor-debit-reply',[UserController::class,'vendor_debit_reply']);
 
 
@@ -202,7 +212,16 @@ Route::post('vendor-debit-reply',[UserController::class,'vendor_debit_reply']);
 Route::get('payment-follow',[UserController::class,'payment_follow']);
 Route::post('payment-follow',[UserController::class,'add_payment_follow']);
 
+Route::post('edit-payment-follow',[UserController::class,'edit_payment_follow']);
+
 Route::get('vendor-show-payment-detail',[UserController::class,'vendor_show_payment_detail']);
 Route::get('vendor-show-payment-message/{id}',[UserController::class,'vendor_show_payment_message']);
 
 Route::post('vendor-payment-follow-reply',[UserController::class,'vendor_payment_follow_reply']);
+
+
+
+
+
+
+

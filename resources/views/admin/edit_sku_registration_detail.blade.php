@@ -142,7 +142,7 @@
 
             <div id="skuRows">
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-4">
                         <div class="form-group">
                             <label for="" class="mt-3"><b>Brand</b></label>
                             <input type="text" class="form-control" id="entityName" name="brand"
@@ -153,7 +153,7 @@
                         </div>
                     </div>
 
-                    <div class="col-6">
+                    <div class="col-4">
                         <div class="form-group">
                             <label for="" class="mt-3"><b>Vendor Name</b></label>
                             <input type="text" class="form-control" id="entityName" value="{{ $skuDetail->vendor_name }}"
@@ -162,9 +162,9 @@
                         </div>
                     </div>
 
-                    <div class="col-6">
+                    <div class="col-4">
                         <div class="form-group">
-                            <label for=""><b>Product Name</b></label>
+                            <label for="" class="mt-3"><b>Product Name</b></label>
                             <input type="text" class="form-control" id="entityName"
                                 value="{{ $skuDetail->product_name }}" name="product_name" maxlength="60">
                             @error('product_name')
@@ -172,6 +172,17 @@
                             @enderror
                         </div>
                     </div>
+                    
+                    
+                    
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for=""><b>Unit</b></label>
+                             <input type="text" class="form-control" id="entityName"
+                                value="{{ $skuDetail->unit }}" name="unit">
+                        </div>
+                    </div>
+                    
 
                     <div class="col-6">
                         <div class="form-group">
@@ -186,6 +197,9 @@
                                 allowed.</span>
                         </div>
                     </div>
+                    
+                    
+                    
 
                     <div class="col-3">
                         <div class="form-group">
@@ -199,18 +213,7 @@
                         </div>
                     </div>
 
-                    <div class="col-3">
-                        <div class="form-group">
-                            <label for=""><b>Unit</b></label>
-                            <select class="form-control" id="exampleFormControlSelect1" name="unit">
-                                <option selected disabled>Choose Unit</option>
-                                <option value="Unit" {{ $skuDetail->unit == 'Unit' ? 'selected' : '' }}>Unit</option>
-                                <option value="Kgs" {{ $skuDetail->unit == 'Kgs' ? 'selected' : '' }}>Kgs</option>
-                                <option value="Gms" {{ $skuDetail->unit == 'Gms' ? 'selected' : '' }}>Gms</option>
-                            </select>
-
-                        </div>
-                    </div>
+                    
                     <div class="col-3">
                         <div class="form-group">
                             <label for=""><b>Case QTY</b></label>
@@ -288,14 +291,76 @@
                         </div>
                     </div> --}}
 
+                   <div class="col-3">
+                        <div class="form-group">
+                            <label for="mrp"><b>MRP</b></label>
+                            <input type="number" class="form-control" id="mrp" 
+                                name="mrp"
+                                value="{{ number_format($skuDetail->mrp, 2) }}" 
+                                step="0.01" min="0" onblur="formatDecimal(this)">
+                            
+                            @error('mrp')
+                                <span style="color: red;">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
 
+                    
+                    
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="marginPercentage"><b>Margin%</b></label>
+                            <input type="number" class="form-control" id="marginPercentage"
+                                value="{{ $skuDetail->margin_percentage }}" name="margin_percentage"
+                                step="0.01" min="0" onblur="formatDecimal(this)">
+                            @error('margin_percentage')
+                                <span style="color: red;">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="margin"><b>Margin</b></label>
+                            <input type="text" class="form-control" id="margin" name="margin"
+                                value="{{ $skuDetail->margin }}" readonly>
+                        </div>
+                    </div>
+                    
+                    
+                    
+                     <div class="col-3">
+                        <div class="form-group">
+                            <label for="landingPrice"><b>Landing Price</b></label>
+                            <input type="text" class="form-control" id="landingPrice" name="landing_price"
+                                value="{{ $skuDetail->landing_price }}" readonly>
+
+                        </div>
+                    </div>
+                    
+                    
+                    
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="gstPercentage"><b>GST%</b></label>
+                            <input type="number" class="form-control" id="gstPercentage"
+                                value="{{ $skuDetail->gst_percentage }}" name="gst_percentage"
+                                step="0.01" min="0" onblur="formatDecimal(this)">
+                            @error('gst_percentage')
+                                <span style="color: red;">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    
+                    
+                    
                     <div class="col-3">
                         <div class="form-group">
                             <label for="gstPercentage"><b>Cess%</b></label>
                             <input type="number" class="form-control" id="cessPercentage"
-                                value="{{ number_format($skuDetail->cess_percentage, 2) }}" name="cess_percentage"
-                                step="0.01" min="0" pattern="\d+(\.\d{1,2})?"
-                                title="Please enter a number with up to two decimal places">
+                                value="{{ $skuDetail->cess_percentage }}" name="cess_percentage"
+                                step="0.01" min="0" onblur="formatDecimal(this)">
                             @error('cess_percentage')
                                 <span style="color: red;">{{ $message }}</span>
                             @enderror
@@ -307,8 +372,7 @@
                         <div class="form-group">
                             <label for=""><b>Additional Cess</b></label>
                             <input type="text" class="form-control" placeholder="Enter Additional Cess"
-                                name="additional_cess" value="{{ number_format($skuDetail->additional_cess,2) }}" id="additionalCess" step="0.01" min="0" pattern="\d+(\.\d{1,2})?"
-                                title="Please enter a number with up to two decimal places">
+                                name="additional_cess" value="{{ $skuDetail->additional_cess}}" id="additionalCess" step="0.01" min="0" onblur="formatDecimal(this)">
                             @error('additional_cess')
                                 <span style="color: red;">{{ $message }}</span>
                             @enderror
@@ -316,63 +380,30 @@
                     </div>
 
 
-                    <div class="col-3">
-                        <div class="form-group">
-                            <label for="gstPercentage"><b>GST%</b></label>
-                            <input type="number" class="form-control" id="gstPercentage"
-                                value="{{ number_format($skuDetail->gst_percentage, 2) }}" name="gst_percentage"
-                                step="0.01" min="0" pattern="\d+(\.\d{1,2})?"
-                                title="Please enter a number with up to two decimal places">
-                            @error('gst_percentage')
-                                <span style="color: red;">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-
+                    
 
                     <div class="col-3">
                         <div class="form-group">
-                            <label for="marginPercentage"><b>Margin%</b></label>
-                            <input type="number" class="form-control" id="marginPercentage"
-                                value="{{ number_format($skuDetail->margin_percentage, 2) }}" name="margin_percentage"
-                                step="0.01" min="0" pattern="\d+(\.\d{1,2})?"
-                                title="Please enter a number with up to two decimal places">
-                            @error('margin_percentage')
-                                <span style="color: red;">{{ $message }}</span>
-                            @enderror
+                            <label for="basicCost"><b>Basic Cost</b></label>
+                            <input type="text" class="form-control" id="basicCost" name="basic_cost" readonly
+                                value="{{ $skuDetail->basic_cost }}">
+
                         </div>
                     </div>
+                    
 
-                    <div class="col-3">
+               
+                     <div class="col-3">
                         <div class="form-group">
-                            <label for="mrp"><b>MRP</b></label>
-                            <input type="number" class="form-control" id="mrp"
-                                value="{{ number_format($skuDetail->mrp, 2) }}" name="mrp" step="0.01"
-                                min="0" pattern="\d+(\.\d{1,2})?"
-                                title="Please enter a number with up to two decimal places">
-                            @error('mrp')
-                                <span style="color: red;">{{ $message }}</span>
-                            @enderror
+                            <label for="gstPrice"><b>GST</b></label>
+                            <input type="text" class="form-control" id="gst" name="gst_price"
+                                value="{{ number_format($skuDetail->gst_price, 2) }}" readonly>
                         </div>
                     </div>
 
+                    
 
-                    <div class="col-3">
-                        <div class="form-group">
-                            <label for="margin"><b>Margin</b></label>
-                            <input type="text" class="form-control" id="margin" name="margin"
-                                value="{{ $skuDetail->margin }}" readonly>
-                        </div>
-                    </div>
-
-                    <div class="col-3">
-                        <div class="form-group">
-                            <label for="landingPrice"><b>Landing Price</b></label>
-                            <input type="text" class="form-control" id="landingPrice" name="landing_price"
-                                value="{{ $skuDetail->landing_price }}" readonly>
-
-                        </div>
-                    </div>
+                   
 
                     <div class="col-3">
                         <div class="form-group">
@@ -383,23 +414,10 @@
                         </div>
                     </div>
 
-                    <div class="col-3">
-                        <div class="form-group">
-                            <label for="gstPrice"><b>GST</b></label>
-                            <input type="text" class="form-control" id="gstPrice" name="gst_price"
-                                value="{{ number_format($skuDetail->gst_price, 2) }}" readonly>
-                        </div>
-                    </div>
+                   
 
 
-                    <div class="col-3">
-                        <div class="form-group">
-                            <label for="basicCost"><b>Basic Cost</b></label>
-                            <input type="text" class="form-control" id="basicCost" name="basic_cost" readonly
-                                value="{{ $skuDetail->basic_cost }}">
-
-                        </div>
-                    </div>
+                    
                 </div>
 
 
@@ -461,79 +479,55 @@
             }, 4000);
 
 
-            $(document).ready(function() {
-                function calculateValues() {
-                    var gstPercentage = parseFloat($('#gstPercentage').val()) || 0;
-                    var marginPercentage = parseFloat($('#marginPercentage').val()) || 0;
-                    var mrp = parseFloat($('#mrp').val()) || 0;
-                    var cessPercentage = parseFloat($('#cessPercentage').val()) || 0;
-                    var additionalCess = parseFloat($('#additionalCess').val()) || 0;
-                  
-                    // Calculate Margin
-                    var margin = mrp * (marginPercentage / 100);
-                    $('#margin').val(margin.toFixed(2));
-
-
-                    // Calculate GST
-                    var gst = mrp * (gstPercentage / 100);
-                    $('#gst').val(gst.toFixed(2));
-
-                    // Calculate Landing Price
-                    // var landingPrice = mrp - margin;
-                    var landingPrice = mrp - margin;
-                    $('#landingPrice').val(landingPrice.toFixed(2));
-
-
-
-                    // Calculate Basic Cost
-                    var basicCost = (landingPrice - additionalCess) * 100 / (100 + gstPercentage +
-                        cessPercentage);
-                    $('#basicCost').val(basicCost.toFixed(2));
-
-                    // Recalculate GST based on Basic Cost and Landing Price
-                    gst = basicCost * gstPercentage / 100;
-                    $('#gst').val(gst.toFixed(2));
-
-
-                    var cess = basicCost * cessPercentage / 100;
-                    $('#cess').val(cess.toFixed(2));
-
-                    console.log(cess);
-                }
-
-                $('#gstPercentage, #marginPercentage, #mrp,#cessPercentage,#additionalCess').on('input', calculateValues);
-            });
-
-
-            // // Function to calculate values
-            // function calculateValues(row) {
-            //     var gstPercentage = parseFloat(row.find('.gstPercentage').val()) || 0;
-            //     var marginPercentage = parseFloat(row.find('.marginPercentage').val()) || 0;
-            //     var mrp = parseFloat(row.find('.mrp').val()) || 0;
-
-            //     // Calculate Margin
-            //     var margin = mrp * (marginPercentage / 100);
-            //     row.find('.margin').val(margin.toFixed(2));
-
-            //     // Calculate Landing Price
-            //     var landingPrice = mrp - margin;
-            //     row.find('.landingPrice').val(landingPrice.toFixed(2));
-
-            //     // Calculate GST
-            //     var gst = mrp * (gstPercentage / 100);
-            //     row.find('.gstPrice').val(gst.toFixed(2));
-
-            //     // Calculate Basic Cost
-            //     var basicCost = landingPrice * 100 /(100 + gstPercentage);
-            //     row.find('.basicCost').val(basicCost.toFixed(2));
-            // }
-
-            // // Event delegation for dynamically added rows
-            // $(document).on('input', '.gstPercentage, .marginPercentage, .mrp', function() {
-            //     var row = $(this).closest('.row');
-            //     calculateValues(row);
-            // });
         });
+        
+         $(document).ready(function() {
+            function calculateValues() {
+                var gstPercentage = parseFloat($('#gstPercentage').val()) || 0;
+                var marginPercentage = parseFloat($('#marginPercentage').val()) || 0;
+                var mrp = parseFloat($('#mrp').val()) || 0;
+                var cessPercentage = parseFloat($('#cessPercentage').val()) || 0;
+                var additionalCess = parseFloat($('#additionalCess').val()) || 0;
+
+                // Calculate Margin
+                var margin = mrp * (marginPercentage / 100);
+                $('#margin').val(margin.toFixed(2));
+
+
+                // Calculate GST
+                var gst = mrp * (gstPercentage / 100);
+                $('#gst').val(gst.toFixed(2));
+
+                // Calculate Landing Price
+                // var landingPrice = mrp - margin;
+                var landingPrice = mrp - margin;
+                $('#landingPrice').val(landingPrice.toFixed(2));
+
+
+
+                // Calculate Basic Cost
+                var basicCost = (landingPrice - additionalCess) * 100 / (100 + gstPercentage + cessPercentage);
+                $('#basicCost').val(basicCost.toFixed(2));
+
+                // Recalculate GST based on Basic Cost and Landing Price
+                gst = basicCost * gstPercentage / 100;
+                $('#gst').val(gst.toFixed(2));
+
+
+                var cess = basicCost * cessPercentage / 100;
+                $('#cess').val(cess.toFixed(2));
+            }
+
+            $('#gstPercentage, #marginPercentage, #mrp,#cessPercentage,#additionalCess').on('input', calculateValues);
+        });
+        
+        function formatDecimal(input) {
+            // Convert the value to a float and format to two decimal places
+            const value = parseFloat(input.value);
+            if (!isNaN(value)) {
+                input.value = value.toFixed(2);
+            }
+        }
 
 
         $(document).ready(function() {
@@ -593,33 +587,7 @@
         });
 
 
-        document.addEventListener('DOMContentLoaded', function() {
-            var input = document.getElementById('gstPercentage');
-
-            input.addEventListener('input', function(e) {
-                var value = e.target.value;
-                // Ensure only two decimal places
-                var formattedValue = parseFloat(value).toFixed(2);
-                e.target.value = formattedValue;
-            });
-        });
 
 
-        document.addEventListener('DOMContentLoaded', function() {
-            var fields = ['marginPercentage', 'mrp', 'gstPercentage']; // Include all field IDs
-
-            fields.forEach(function(id) {
-                var input = document.getElementById(id);
-
-                if (input) {
-                    input.addEventListener('input', function(e) {
-                        var value = e.target.value;
-                        // Ensure only two decimal places
-                        var formattedValue = parseFloat(value).toFixed(2);
-                        e.target.value = formattedValue;
-                    });
-                }
-            });
-        });
     </script>
 @endsection

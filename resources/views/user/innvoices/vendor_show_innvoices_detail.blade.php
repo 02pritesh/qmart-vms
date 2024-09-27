@@ -91,7 +91,7 @@
                                  
                                     <th scope="col">Date</th>
                                     <th scope="col">Type</th>
-                                    <th scope="col">Subject</th>
+                                    <th scope="col">Document No</th>
                                     <th scope="col">Replied By</th>
                                     <th scope="col">Status</th>
                                 </tr>
@@ -106,7 +106,7 @@
                                             {{ $item['description'] }}
                                         </td>
                                         <td>
-                                            {{$item->subject}}
+                                            {{$item->vendor_document}}
                                         </td>
                                         <td>
                                             {{$item->approved_by}}

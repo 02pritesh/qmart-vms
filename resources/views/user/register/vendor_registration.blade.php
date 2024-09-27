@@ -284,7 +284,7 @@
                 <div class="form-group position-relative">
                     <label for="msme_number" class="mt-3"><b>MSME Number, if any</b></label>
                     <input type="text" class="form-control" id="msme_number" name="msme_number"
-                        placeholder="Enter MSME number" maxlength="19" value="{{ old('msme_number',$data->msme_number ?? '') }}">
+                        placeholder="Enter MSME number" maxlength="16" value="{{ old('msme_number',$data->msme_number ?? '') }}">
                     <img src="{{ asset('public/assets/upload/msme-1.jpeg') }}" alt="MSME Photo" class="pan-icon"
                         style="width:55px">
                     @error('msme_number')
@@ -525,7 +525,7 @@
                 <div class="form-group">
                     <label for="" class="mt-3"><b>Payment Ref</b></label>
                     <input type="text" class="form-control" id="entityName" name="q_mart_retail"
-                        placeholder="Enter Q-mart Retail" value="{{ old('q_mart_retail',$data->q_mart_retail ?? '') }}">
+                        placeholder="Enter Payment Ref" value="{{ old('q_mart_retail',$data->q_mart_retail ?? '') }}">
                     @error('q_mart_retail')
                         <span style="color: red">{{ $message }}</span>
                     @enderror
@@ -547,9 +547,11 @@
 
 
 
-
+    
     <button type="submit" class="btn-submit btn-report mr-3 mb-3">Submit</button>
-    <button type="reset" class="btn-submit btn-reset btn-danger mb-3">Reset</button>
+    @if(!old('subject',$data->subject ?? ''))
+        <button type="reset" class="btn-submit btn-reset btn-danger mb-3">Reset</button>
+    @endif
     </form>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

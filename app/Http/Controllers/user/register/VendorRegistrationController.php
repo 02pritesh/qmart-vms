@@ -141,10 +141,10 @@ public function add_vendor_registration(Request $request)
                 'gst_number' => 'required|string|size:15',
                 'email' => 'nullable|email',
                 // 'pan_number' => 'required|string|unique:vendor_registrations,pan_number|size:10',
-                'msme_number' => [
-                    'nullable',
-                    'regex:/^UDYAM-[A-Z]{2}-\d{2}-\d{7}$/',
-                ],
+                // 'msme_number' => [
+                //     'nullable',
+                //     'regex:/^UDYAM-[A-Z]{2}-\d{2}-\d{7}$/',
+                // ],
                 'fssai_number' => [
                     'nullable',
                     'numeric',
@@ -153,7 +153,7 @@ public function add_vendor_registration(Request $request)
                 'rtv_expiry' => 'required|string',
                 'rtv_damage' => 'required|string',
                 'payment_cycle' => 'required|string',
-                'cancelled_cheque' => 'nullable|mimes:pdf,xlsx,xls,png,jpg,zip|max:5120',
+                'cancelled_cheque' => 'required|mimes:pdf,xlsx,xls,png,jpg,zip|max:5120',
                 'beneficiary_name' => 'required|string',
                 'bank_name' => 'required|string',
                 'bank_address' => 'required|string',

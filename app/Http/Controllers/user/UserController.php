@@ -142,6 +142,7 @@ class UserController extends Controller
             $data->subject = $request->brand;
             $data->user_id = session()->get('vendor_id');
             $data->vendor_name = $request->vendor_name;
+            // $data->approved_by = $request->vendor_name;
             $data->description = 'Sku Registration';
 
             $vendor = session()->get('vendor_id');
@@ -180,6 +181,109 @@ class UserController extends Controller
             $errorMessage = $exception->getMessage();
             $shortMessage = strtok($errorMessage, '('); // This will truncate the message at the first '('
 
+            return redirect('vendor-show-sku-registration-detail')->with('error', 'An error occurred: ' . $shortMessage);
+        }
+    }
+    
+    
+    
+    
+    public function edit_sku_registration(Request $request){
+        $this->validate($request, [
+            'subject' => 'required',
+            'product_name' => 'required|string',
+            'category' => 'required|string',
+            'case_qty' => 'required|numeric',
+            'EAN_Code' => 'required|string|max:13',
+            'shelf_life' => 'required|string',
+
+            'gst_percentage' => 'required|numeric',
+            'margin_percentage' => 'required|numeric',
+            'mrp' => 'required|numeric',
+            'rtv' => 'required',
+            'unit' => 'required',
+            'HSN_Code' => 'required|digits_between:6,8',
+            'cess_percentage' => 'nullable|numeric',
+            'additional_cess' => 'nullable|numeric',
+
+        ], [
+            'EAN_Code.*.required' => 'The EAN Code field is required.',
+            'EAN_Code.*.regex' => 'The EAN Code must be exactly 13 alphanumeric characters.',
+            'EAN_Code.*.max' => 'The EAN Code can be less than 13 characters',
+            'product_name.*.required' => 'The Product Name field is required.',
+            'category.*.required' => 'The Category field is required.',
+            'case_qty.*.required' => 'The Case Quantity field is required.',
+            'case_qty.*.numeric' => 'The Case Quantity must be a number.',
+            'shelf_life.*.required' => 'The Shelf Life field is required.',
+            'HSN_Code.*required' => 'The HSN Code field is required.',
+            // 'CGST_Code.*required' => 'The HSN Code field is required.',
+            // 'SGST_Code.*required' => 'The HSN Code field is required.',
+            // 'IGST_Code.*required' => 'The HSN Code field is required.',
+            'cess_percentage.*required' => 'The HSN Code field is required.',
+            'additional_cess.*required' => 'The HSN Code field is required.',
+            'HSN_Code.*.numeric' => 'The HSN Code must be a numeric value.',
+            'HSN_Code.*.digits_between' => 'HSN Code must be between 6 and 8 digits for each entry.',
+            // 'HSN_Code.*.min' => 'The HSN Code must be atleast 6 digits.',
+            // 'HSN_Code.*.max' => 'The HSN Code must be atmost 8 digits.',
+            'gst_percentage.*.required' => 'The GST Percentage field is required.',
+            'gst_percentage.*.numeric' => 'The GST Percentage must be a numeric value.',
+            'margin_percentage.*.required' => 'The Margin Percentage field is required.',
+            'margin_percentage.*.numeric' => 'The Margin Percentage must be a numeric value.',
+            'mrp.*.required' => 'The MRP field is required.',
+            'mrp.*.numeric' => 'The MRP must be a numeric value.',
+            'rtv.*.required' => 'The RTV field is required.',
+            'unit.*.required' => 'The Unit field is required.',
+        ]);
+
+
+
+        try {
+            $data = SkuRegistration::find($request->id);
+            
+            
+            $data->subject = $request->subject;
+            $data->user_id = session()->get('vendor_id');
+            $data->vendor_name = $request->vendor_name;
+            // $data->approved_by = $request->vendor_name;
+            $data->description = 'Sku Registration';
+
+            $vendor = session()->get('vendor_id');
+            $vendor = User::where('id', $vendor)->first();
+            $gstin = $vendor->gstin;
+
+            $data->gst_number = $gstin;
+            $data->product_name = $request->product_name;
+            $data->category = $request->category;
+            $data->rtv = $request->rtv;
+            $data->unit = $request->unit;
+            $data->case_qty = $request->case_qty;
+            $data->EAN_Code = $request->EAN_Code;
+            $data->shelf_life = $request->shelf_life;
+            $data->HSN_Code = $request->HSN_Code;
+            // $data->CGST_Code = $request->CGST_Code;
+            // $data->SGST_Code = $request->SGST_Code;
+            // $data->IGST_Code = $request->IGST_Code;
+            $data->cess_percentage = $request->cess_percentage;
+            $data->cess = $request->cess;
+            $data->additional_cess = $request->additional_cess;
+            $data->gst_percentage = $request->gst_percentage;
+            $data->margin_percentage = $request->margin_percentage;
+            $data->mrp = $request->mrp;
+            $data->margin = $request->margin;
+            $data->landing_price = $request->landing_price;
+            $data->gst_price = $request->gst_price;
+            $data->basic_cost = $request->basic_cost;
+            $data->sku_remark = $request->sku_remark;
+
+            // dd($data);
+            $data->save();
+
+            return redirect("vendor-show-sku-registration-detail")->with("success", "Sku Details Update successfully!");
+        } catch (Exception $exception) {
+            // Extract the relevant part of the error message
+            $errorMessage = $exception->getMessage();
+            $shortMessage = strtok($errorMessage, '('); // This will truncate the message at the first '('
+            
             return redirect('vendor-show-sku-registration-detail')->with('error', 'An error occurred: ' . $shortMessage);
         }
     }
@@ -356,6 +460,7 @@ class UserController extends Controller
             $data->user_id = session()->get('vendor_id');
             $data->subject = $request->subject;
             $data->vendor_name = $request->vendor_name;
+            $data->approved_by = $request->vendor_name;
             $data->vendor_message = $request->vendor_message;
             $data->description = 'Request Report';
 
@@ -386,6 +491,55 @@ class UserController extends Controller
         }
     }
 
+
+
+
+    public function edit_request_report(Request $request){
+          $this->validate($request, [
+            'vendor_file' => 'nullable|mimes:pdf,png,jpg,xlsx,xls,zip|max:5120',
+            'subject' => 'nullable',
+            'vendor_message' => 'required'
+
+        ], [
+            'vendor_file' => 'Invalide File Formate'
+        ]);
+
+        try {
+
+            $data = RequestReport::find($request->id);
+
+            $data->user_id = session()->get('vendor_id');
+            $data->subject = $request->subject;
+            $data->vendor_name = $request->vendor_name;
+            $data->vendor_message = $request->vendor_message;
+            $data->description = 'Request Report';
+
+            $vendor = session()->get('vendor_id');
+            $vendor = User::where('id', $vendor)->first();
+            $gstin = $vendor->gstin;
+
+            $data->gst_number = $gstin;
+
+            if ($request->has('vendor_file')) {
+                $data->vendor_file = $request->file('vendor_file')->getClientOriginalName();
+                $request->file('vendor_file')->move('public/assets/upload/', $data->vendor_file);
+            }
+
+            // dd($data);
+            $result = $data->save();
+            if ($result) {
+                return redirect('vendor-show-request-report-registration-detail')->with('success', 'Message Update Successfully!!');
+            } else {
+                return redirect('vendor-show-request-report-registration-detail')->with('error', 'Message Update not sent');
+            }
+        } catch (Exception $exception) {
+            // Extract the relevant part of the error message
+            $errorMessage = $exception->getMessage();
+            $shortMessage = strtok($errorMessage, '('); // This will truncate the message at the first '('
+
+            return redirect()->back()->with('error', 'An error occurred: ' . $shortMessage);
+        }
+    }
 
 
 
@@ -511,9 +665,10 @@ class UserController extends Controller
 
     public function add_innvoices_mrn(Request $request){
         
-                $this->validate($request, [
+        $this->validate($request, [
                 'vendor_file' => 'nullable|mimes:pdf,png,jpg,xlsx,xls,zip|max:5120',
-                'subject' => 'nullable',
+                'vendor_document' => 'required|numeric',
+                'vendor_amount' => 'required|numeric',
                 'vendor_message' => 'required'
 
                 ], [
@@ -525,10 +680,11 @@ class UserController extends Controller
             $data = new InnvoicesMrn();
 
             $data->user_id = session()->get('vendor_id');
-            $data->subject = $request->subject;
+            $data->vendor_document = $request->vendor_document;
+            $data->vendor_amount = $request->vendor_amount;
             $data->vendor_name = $request->vendor_name;
             $data->vendor_message = $request->vendor_message;
-           
+            $data->approved_by = $request->vendor_name;
 
             $vendor = session()->get('vendor_id');
             $vendor = User::where('id', $vendor)->first();
@@ -559,7 +715,59 @@ class UserController extends Controller
 
 
 
+    public function edit_innvoices_mrn(Request $request){
+        $this->validate($request, [
+                'vendor_file' => 'nullable|mimes:pdf,png,jpg,xlsx,xls,zip|max:5120',
+                'vendor_document' => 'required|numeric',
+                'vendor_amount' => 'required|numeric',
+                'vendor_message' => 'required'
 
+                ], [
+                    'vendor_file.*.mimes' => 'Invalide File Formate',
+                    'vendor_file.*.max' => 'The vendor file size be less than 5MB'
+                ]);
+
+        try {
+            $data = InnvoicesMrn::find($request->id);
+            
+
+            $data->user_id = session()->get('vendor_id');
+            $data->vendor_document = $request->vendor_document;
+            $data->vendor_amount = $request->vendor_amount;
+            $data->vendor_name = $request->vendor_name;
+            $data->vendor_message = $request->vendor_message;
+            
+           
+
+            $vendor = session()->get('vendor_id');
+            $vendor = User::where('id', $vendor)->first();
+            $gstin = $vendor->gstin;
+
+            $data->gst_number = $gstin;
+
+            if ($request->has('vendor_file')) {
+                $data->vendor_file = $request->file('vendor_file')->getClientOriginalName();
+                $request->file('vendor_file')->move('public/assets/upload/innvoices', $data->vendor_file);
+            }
+
+            // dd($data);
+            $result = $data->save();
+            if ($result) {
+                return redirect('vendor-show-innvoices-detail')->with('success', 'Message Sent Successfully!!');
+            } else {
+                return redirect('vendor-show-innvoices-detail')->with('error', 'Message doest not sent');
+            }
+        } catch (Exception $exception) {
+            // Extract the relevant part of the error message
+            $errorMessage = $exception->getMessage();
+            $shortMessage = strtok($errorMessage, '('); // This will truncate the message at the first '('
+
+            return redirect()->back()->with('error', 'An error occurred: ' . $shortMessage);
+        }
+    }
+    
+    
+    
 
     public function vendor_show_innvoices_detail(){
         try{
@@ -618,6 +826,8 @@ class UserController extends Controller
             $this->validate(
                 $request,
                 [
+                    'vendor_document' => 'required|numeric',
+                    'vendor_amount' => 'required|numeric',
                     'vendor_message' => 'required',
                     'vendor_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120',
                     // 'admin_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120'
@@ -632,6 +842,8 @@ class UserController extends Controller
         try{
             $data = InnvoicesMrn::where('id', $request->id)->first();
           
+            $data->vendor_document = $request->vendor_document;
+            $data->vendor_amount = $request->vendor_amount;
             $data->vendor_message = $request->vendor_message;
             $data->vendor_name = $request->vendor_name;
     
@@ -670,6 +882,7 @@ class UserController extends Controller
 
 // --------------------------------------- Debit/Credit Note ------------------------------------
 
+
     public function debit_credit(){
         try{
 
@@ -695,10 +908,12 @@ class UserController extends Controller
 
     public  function add_debit_credit_detail(Request $request){
         
-            $this->validate($request, [
+        $this->validate($request, [
                 'vendor_file' => 'nullable|mimes:pdf,png,jpg,xlsx,xls,zip|max:5120',
-                'subject' => 'nullable',
-                'vendor_message' => 'required'
+                'vendor_message' => 'required',
+                'vendor_document' => 'required|numeric',
+                'vendor_amount' => 'required|numeric',
+                
 
                 ], [
                     'vendor_file.*.mimes' => 'Invalide File Formate',
@@ -709,9 +924,11 @@ class UserController extends Controller
             $data = new DebitCredit();
 
             $data->user_id = session()->get('vendor_id');
-            $data->subject = $request->subject;
+            $data->vendor_document = $request->vendor_document;
+            $data->vendor_amount = $request->vendor_amount;
             $data->vendor_name = $request->vendor_name;
             $data->vendor_message = $request->vendor_message;
+            $data->approved_by = $request->vendor_name;
            
 
             $vendor = session()->get('vendor_id');
@@ -742,6 +959,56 @@ class UserController extends Controller
     }
 
 
+
+    public function edit_debit_note(Request $request){
+         $this->validate($request, [
+                'vendor_file' => 'nullable|mimes:pdf,png,jpg,xlsx,xls,zip|max:5120',
+                'vendor_message' => 'required',
+                'vendor_document' => 'required|numeric',
+                'vendor_amount' => 'required|numeric',
+                
+
+                ], [
+                    'vendor_file.*.mimes' => 'Invalide File Formate',
+                    'vendor_file.*.max' => 'The vendor file size be less than 5MB'
+                ]);
+
+        try{
+            $data =  DebitCredit::find($request->id);
+
+            $data->user_id = session()->get('vendor_id');
+            $data->vendor_document = $request->vendor_document;
+            $data->vendor_amount = $request->vendor_amount;
+            $data->vendor_name = $request->vendor_name;
+            $data->vendor_message = $request->vendor_message;
+           
+
+            $vendor = session()->get('vendor_id');
+            $vendor = User::where('id', $vendor)->first();
+            $gstin = $vendor->gstin;
+
+            $data->gst_number = $gstin;
+
+            if ($request->has('vendor_file')) {
+                $data->vendor_file = $request->file('vendor_file')->getClientOriginalName();
+                $request->file('vendor_file')->move('public/assets/upload/debit', $data->vendor_file);
+            }
+
+            // dd($data);
+            $result = $data->save();
+            if ($result) {
+                return redirect('vendor-show-credit-detail')->with('success', 'Message Sent Successfully!!');
+            } else {
+                return redirect('vendor-show-credit-detail')->with('error', 'Message doest not sent');
+            }
+
+        }catch(Exception $exception){
+            $message = $exception->getMessage();
+            $sortmessage = strtok($message,'(');
+
+            return redirect()->back()->with('error','An error occured: '.$sortmessage);
+        }
+    }
 
 
     public function  vendor_show_credit_detail(){
@@ -796,6 +1063,8 @@ class UserController extends Controller
             $this->validate(
                 $request,
                 [
+                     'vendor_document' => 'required|numeric',
+                    'vendor_amount' => 'required|numeric',
                     'vendor_message' => 'required',
                     'vendor_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120',
                     // 'admin_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120'
@@ -810,7 +1079,8 @@ class UserController extends Controller
         try{
     
             $data = DebitCredit::where('id', $request->id)->first();
-          
+            $data->vendor_document = $request->vendor_document;
+            $data->vendor_amount = $request->vendor_amount;
             $data->vendor_message = $request->vendor_message;
             $data->vendor_name = $request->vendor_name;
     
@@ -876,7 +1146,7 @@ class UserController extends Controller
 
     public function add_payment_follow(Request $request){
         
-            $this->validate($request, [
+        $this->validate($request, [
                 'vendor_file' => 'nullable|mimes:pdf,png,jpg,xlsx,xls,zip|max:5120',
                 'subject' => 'nullable',
                 'vendor_message' => 'required'
@@ -888,6 +1158,57 @@ class UserController extends Controller
 
         try{
             $data = new PaymentFollow();
+
+            $data->user_id = session()->get('vendor_id');
+            $data->subject = $request->subject;
+            $data->vendor_name = $request->vendor_name;
+            $data->vendor_message = $request->vendor_message;
+            $data->approved_by = $request->vendor_name;
+           
+
+            $vendor = session()->get('vendor_id');
+            $vendor = User::where('id', $vendor)->first();
+            $gstin = $vendor->gstin;
+
+            $data->gst_number = $gstin;
+
+            if ($request->has('vendor_file')) {
+                $data->vendor_file = $request->file('vendor_file')->getClientOriginalName();
+                $request->file('vendor_file')->move('public/assets/upload/payment', $data->vendor_file);
+            }
+
+            // dd($data);
+            $result = $data->save();
+            if ($result) {
+                return redirect('vendor-show-payment-detail')->with('success', 'Message Sent Successfully!!');
+            } else {
+                return redirect('vendor-show-payment-detail')->with('error', 'Message doest not sent');
+            }
+
+        }catch(Exception $exception){
+            $message = $exception->getMessage();
+            $sortmessage = strtok($message,'(');
+
+            return redirect()->back()->with('error','An error occured: '.$sortmessage);
+        }
+    }
+    
+
+
+
+    public function edit_payment_follow(Request $request){
+         $this->validate($request, [
+                'vendor_file' => 'nullable|mimes:pdf,png,jpg,xlsx,xls,zip|max:5120',
+                'subject' => 'nullable',
+                'vendor_message' => 'required'
+
+                ], [
+                    'vendor_file.*.mimes' => 'Invalide File Formate',
+                    'vendor_file.*.max' => 'The vendor file size be less than 5MB'
+                ]);
+
+        try{
+            $data = PaymentFollow::find($request->id);
 
             $data->user_id = session()->get('vendor_id');
             $data->subject = $request->subject;
@@ -921,8 +1242,6 @@ class UserController extends Controller
             return redirect()->back()->with('error','An error occured: '.$sortmessage);
         }
     }
-    
-
 
 
 

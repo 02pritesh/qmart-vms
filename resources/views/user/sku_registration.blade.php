@@ -136,11 +136,11 @@
     <div class="container block mt-4 mb-4">
         <form id="skuForm" action="{{ url('sku-registration') }}" method="POST">
             @csrf
-            <input type="hidden" name="vendor_name" value="{{ $vendor->vendor_name }}">
+            <!--<input type="hidden" name="vendor_name" value="{{ $vendor->vendor_name }}">-->
 
             <div id="skuRows">
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-4">
                         <div class="form-group">
                             <label for="" class="mt-3"><b>Brand</b></label>
                             <input type="text" class="form-control" id="entityName" name="brand"
@@ -150,8 +150,19 @@
                             @enderror
                         </div>
                     </div>
+                    
+                     <div class="col-4">
+                        <div class="form-group">
+                            <label for="" class="mt-3"><b>Vendor Name</b></label>
+                            <input type="text" class="form-control" id="entityName" name="vendor_name"
+                               value="{{ $vendor->vendor_name }}" readonly>
+                            @error('brand')
+                                <span style="color: red">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
 
-                    <div class="col-6">
+                    <div class="col-4">
                         <div class="form-group">
                             <label for="" class="mt-3"><b>Product Name</b></label>
                             <input type="text" class="form-control" id="entityName" placeholder="Enter product name"
@@ -161,6 +172,20 @@
                             @enderror
                         </div>
                     </div>
+
+                     <div class="col-3">
+                        <div class="form-group">
+                            <label for=""><b>Unit</b></label>
+                            <input type="text" class="form-control"  placeholder="Eg. 300ml/300gms etc.."
+                                name="unit"  value="{{ old('unit') }}">
+                            
+                            @error('unit')
+                                <span style="color: red;">{{ $message }}</span>
+                            @enderror
+
+                        </div>
+                    </div>
+                    
 
                     <div class="col-6">
                         <div class="form-group">
@@ -175,7 +200,8 @@
                                 allowed.</span>
                         </div>
                     </div>
-
+                    
+                    
                     <div class="col-3">
                         <div class="form-group">
                             <label for=""><b>RTV</b></label>
@@ -187,22 +213,6 @@
                             @error('rtv')
                                 <span style="color: red;">{{ $message }}</span>
                             @enderror
-                        </div>
-                    </div>
-
-                    <div class="col-3">
-                        <div class="form-group">
-                            <label for=""><b>Unit</b></label>
-                            <select class="form-control" id="exampleFormControlSelect1" name="unit">
-                                <option selected disabled>Choose Unit</option>
-                                <option value="Unit" {{ old('unit') == 'Unit' ? 'selected' : '' }}>Unit</option>
-                                <option value="Kgs" {{ old('unit') == 'Kgs' ? 'selected' : '' }}>Kgs</option>
-                                <option value="Gms" {{ old('unit') == 'Gms' ? 'selected' : '' }}>Gms</option>
-                            </select>
-                            @error('unit')
-                                <span style="color: red;">{{ $message }}</span>
-                            @enderror
-
                         </div>
                     </div>
 
@@ -283,6 +293,67 @@
                             @enderror
                         </div>
                     </div> --}}
+                    
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="mrp"><b>MRP</b></label>
+                            <input type="number" class="form-control" id="mrp" placeholder="Enter MRP"
+                                name="mrp" value="{{ old('mrp') }}" step="0.01" min="0"
+                                onblur="formatDecimal(this)">
+                            @error('mrp')
+                                <span style="color: red;">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    
+                    
+                    
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="marginPercentage"><b>Margin%</b></label>
+                            <input type="number" class="form-control" id="marginPercentage"
+                                placeholder="Enter Margin Percentage" name="margin_percentage"
+                                value="{{ old('margin_percentage') }}" step="0.01" min="0"
+                                onblur="formatDecimal(this)">
+                            @error('margin_percentage')
+                                <span style="color: red;">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    
+                    
+                    
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="margin"><b>Margin</b></label>
+                            <input type="text" class="form-control" id="margin" name="margin"
+                                value="{{ old('margin') }}" readonly>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="landingPrice"><b>Landing Price</b></label>
+                            <input type="text" class="form-control" id="landingPrice" name="landing_price"
+                                value="{{ old('landing_price') }}" readonly>
+
+                        </div>
+                    </div>
+                    
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="gstPercentage"><b>GST%</b></label>
+                            <input type="number" class="form-control" id="gstPercentage"
+                                placeholder="Enter GST Percentage" name="gst_percentage"
+                                value="{{ old('gst_percentage') }}" step="0.01" min="0"
+                                onblur="formatDecimal(this)">
+                            @error('gst_percentage')
+                                <span style="color: red;">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+
 
 
                     <div class="col-3">
@@ -310,67 +381,13 @@
 
                     <div class="col-3">
                         <div class="form-group">
-                            <label for="gstPercentage"><b>GST%</b></label>
-                            <input type="number" class="form-control" id="gstPercentage"
-                                placeholder="Enter GST Percentage" name="gst_percentage"
-                                value="{{ old('gst_percentage') }}" step="0.01" min="0"
-                                onblur="formatDecimal(this)">
-                            @error('gst_percentage')
-                                <span style="color: red;">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="col-3">
-                        <div class="form-group">
-                            <label for="marginPercentage"><b>Margin%</b></label>
-                            <input type="number" class="form-control" id="marginPercentage"
-                                placeholder="Enter Margin Percentage" name="margin_percentage"
-                                value="{{ old('margin_percentage') }}" step="0.01" min="0"
-                                onblur="formatDecimal(this)">
-                            @error('margin_percentage')
-                                <span style="color: red;">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="col-3">
-                        <div class="form-group">
-                            <label for="mrp"><b>MRP</b></label>
-                            <input type="number" class="form-control" id="mrp" placeholder="Enter MRP"
-                                name="mrp" value="{{ old('mrp') }}" step="0.01" min="0"
-                                onblur="formatDecimal(this)">
-                            @error('mrp')
-                                <span style="color: red;">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="col-3">
-                        <div class="form-group">
-                            <label for="gstPrice"><b>Cess</b></label>
-                            <input type="text" class="form-control" id="cess" name="cess"
-                                value="{{ old('cess') }}" readonly>
+                            <label for="basicCost"><b>Basic Cost</b></label>
+                            <input type="text" class="form-control" id="basicCost" name="basic_cost" readonly
+                                value="{{ old('basic_cost') }}">
 
                         </div>
                     </div>
 
-                    <div class="col-3">
-                        <div class="form-group">
-                            <label for="margin"><b>Margin</b></label>
-                            <input type="text" class="form-control" id="margin" name="margin"
-                                value="{{ old('margin') }}" readonly>
-                        </div>
-                    </div>
-
-                    <div class="col-3">
-                        <div class="form-group">
-                            <label for="landingPrice"><b>Landing Price</b></label>
-                            <input type="text" class="form-control" id="landingPrice" name="landing_price"
-                                value="{{ old('landing_price') }}" readonly>
-
-                        </div>
-                    </div>
 
                     <div class="col-3">
                         <div class="form-group">
@@ -383,9 +400,9 @@
 
                     <div class="col-3">
                         <div class="form-group">
-                            <label for="basicCost"><b>Basic Cost</b></label>
-                            <input type="text" class="form-control" id="basicCost" name="basic_cost" readonly
-                                value="{{ old('basic_cost') }}">
+                            <label for="gstPrice"><b>Cess</b></label>
+                            <input type="text" class="form-control" id="cess" name="cess"
+                                value="{{ old('cess') }}" readonly>
 
                         </div>
                     </div>

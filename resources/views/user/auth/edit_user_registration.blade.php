@@ -58,7 +58,7 @@
           <div class="col-6">
             <div class="form-group">
               <label for="gstin"><b>GSTIN</b></label>
-              <input type="text" id="gstin" name="gstin" value="{{$data->gstin}}" class="form-control" maxlength="15">
+              <input type="text" id="gstin" name="gstin" value="{{$data->gstin}}" class="form-control" maxlength="15" readonly>
             </div>
           </div>
           <div class="col-6">

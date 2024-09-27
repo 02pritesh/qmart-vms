@@ -127,17 +127,7 @@
         <form action="{{ url('admin-reply') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="row">
-                <!--<div class="form-group">-->
-                <!--    <p></p>-->
-                <!--    <h6>Name</h6>-->
-
-                <!--    <input type="hidden" name="id" >-->
-
-                <!--    <input type="text" class="form-control" id="entityName" -->
-                <!--        name="vendor_name">-->
-
-                <!--</div>-->
-
+               
                 <div class="form-group pt-3">
                     <!--<h6>Message (maximum: 300 words)</h6>-->
                     <label for=""><b>Message (maximum: 300 words)</b></label>

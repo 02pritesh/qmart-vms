@@ -64,14 +64,14 @@
     @endif
 
     <!--<h3 class="text-center" style="color:#000;font-family: Silka-Black;"><b>Request Monthly Sales Report/Statement</b></h3>-->
-    <h3 class="text-center" style="color:#000;font-family: Silka-Black;"><b>Vendor Message</b></h3>
+      <h3 class="text-center" style="color:#000;font-family: Silka-Black;"><b>Vendor Message</b></h3>
 
     <div class="container block mt-4 mb-4">
 
         <form action="{{ url('debit-credit') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="row">
-                <div class="col-6">
+                <div class="col-4">
                     <div class="form-group">
                         <p></p>
                         <!--<h6>Vendor Entity Name</h6>-->
@@ -85,12 +85,23 @@
                     </div>
                 </div>
                 
-                 <div class="col-6">
+                  <div class="col-4">
                     <div class="form-group">
-                        <label for="" class="mt-3"><b>Subject (upto 60 character)</b></label>
-                        <input type="text" class="form-control" id="entityName" name="subject"
-                        value="{{old('subject')}}">
-                        @error('subject')
+                        <label for="" class="mt-3"><b>Document No (upto 40 character)</b></label>
+                        <input type="text" class="form-control" id="entityName" name="vendor_document"
+                        value="{{old('vendor_document')}}" maxlength='40' placeholder='Enter Document No'>
+                        @error('vendor_document')
+                            <span style="color: red">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+                
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="" class="mt-3"><b>Amount</b></label>
+                        <input type="text" class="form-control" id="amount" name="vendor_amount"
+                               value="{{old('vendor_amount')}}" placeholder='Enter Amount'>
+                        @error('vendor_amount')
                             <span style="color: red">{{ $message }}</span>
                         @enderror
                     </div>
@@ -152,6 +163,7 @@
         </form>
     </div>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
         setTimeout(function() {
             $('#success-message').fadeOut('fast')
@@ -160,5 +172,18 @@
         setTimeout(function() {
             $('#error-message').fadeOut('fast')
         }, 4000);
+        
+        
+         // jQuery to format the input to two decimal places
+    $(document).ready(function() {
+        $('#amount').on('blur', function() {
+            let value = parseFloat($(this).val()).toFixed(2);  // Format to 2 decimal places
+            if (!isNaN(value)) {
+                $(this).val(value);  // Set the formatted value
+            } else {
+                $(this).val('0.00');  // Default to 0.00 if the value is invalid
+            }
+        });
+    });
     </script>
 @endsection

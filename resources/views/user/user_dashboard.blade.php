@@ -159,7 +159,7 @@
                                                 {{ $item['description'] }}
                                             </td>
                                             <td>
-                                                {{ $item->subject }}
+                                                {{ $item->vendor_document }}
                                             </td>
                                             <td>{{ $item->approved_by }}</td>
                                             <td>
@@ -177,7 +177,7 @@
                                                 {{ $item['description'] }}
                                             </td>
                                             <td>
-                                                {{ $item->subject }}
+                                                {{ $item->vendor_document }}
                                             </td>
                                             <td>{{ $item->approved_by }}</td>
                                             <td>

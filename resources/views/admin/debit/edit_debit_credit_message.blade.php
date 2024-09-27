@@ -73,12 +73,12 @@
     <!--<h3 class="text-center" style="color:#000;font-family: Silka-Black;"><b>Request Monthly Sales Report/Statement</b></h3>-->
  <form action="{{ url('edit-debit-credit-message') }}" method="POST" enctype="multipart/form-data">
       @csrf
-      
     <h3 class="text-center" style="color:#000;font-family: Silka-Black;"><b>Vendor Message</b></h3>
+    
     <div class="container block mt-4 mb-4">
              <input type="hidden" name="id" value="{{ $messages->id }}">
             <div class="row">
-                <div class="col-6">
+                <div class="col-4">
                     <div class="form-group">
                         <p></p>
                         <!--<h6>Vendor Entity Name</h6>-->
@@ -86,21 +86,35 @@
                         <input type="hidden" name="id" value="{{ $messages->id }}">
     
                         <input type="text" class="form-control" id="entityName" value="{{ $messages->vendor_name }}"
-                            name="vendor_name" >
+                            name="vendor_name" readonly >
     
                     </div>
                 </div>
                 
-                 <div class="col-6">
+                <div class="col-4">
                     <div class="form-group">
-                        <label for="" class="mt-3"><b>Subject</b></label>
-                        <input type="text" class="form-control" id="entityName" name="subject"
-                             value="{{ $messages->subject }}">
-                        @error('subject')
+                        <label for="" class="mt-3"><b>Amount</b></label>
+                        <input type="number" class="form-control" id="entityName" name="vendor_amount"
+                               value="{{ old('vendor_amount', $messages->vendor_amount ?? '') }}" 
+                               placeholder="Enter Amount" step="0.01" onblur="formatAmount(this)">
+                        @error('vendor_amount')
                             <span style="color: red">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
+                
+                 <div class="col-4">
+                    <div class="form-group">
+                        <label for="" class="mt-3"><b>Document No (upto 40 character)</b></label>
+                        <input type="text" class="form-control" id="entityName" name="vendor_document"
+                             value="{{ $messages->vendor_document }}" maxlength="40">
+                        @error('vendor_document')
+                            <span style="color: red">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+                
+               
 
                 <div class="form-group">
                     <!--<h6>Message (maximum: 300 words)</h6>-->
@@ -118,18 +132,18 @@
                    
                     @if ($messages->vendor_file)
                       <input type="hidden" name="existing_vendor_file" value="{{ $messages->vendor_file }}">
-                        @if (in_array(pathinfo($messages->vendor_file, PATHINFO_EXTENSION), ['jpg', 'jpeg', 'png', 'pdf','doc','txt','bmp','xlsx','xls','csv','zip']))
+                        @if (in_array(pathinfo($messages->vendor_file, PATHINFO_EXTENSION), ['jpg', 'jpeg', 'png', 'pdf','xlsx','xls','zip']))
                             
                              @if (in_array(pathinfo($messages->vendor_file, PATHINFO_EXTENSION), ['jpg', 'jpeg', 'png','bmp']))
                             
                                 <div id="vendorImagePreview">
-                                    <a href="{{ asset('public/assets/upload/debit/' . $messages->vendor_file) }}" download>
-                                        <img src="{{ asset('public/assets/upload/debit/' . $messages->vendor_file) }}" alt="Uploaded File" style="max-width: 8%; height: auto;">
+                                    <a href="{{ asset('public/assets/upload/debit/'.$messages->vendor_file) }}" download>
+                                        <img src="{{ asset('public/assets/upload/debit/'. $messages->vendor_file) }}"  style="max-width: 8%; height: auto;">
                                     </a>
                                     <!--<input type="hidden" name="existing_vendor_file" value="{{ $messages->vendor_file }}">-->
                                 </div>
                                 
-                            @elseif(in_array(pathinfo($messages->vendor_file, PATHINFO_EXTENSION), ['pdf','docx','doc','txt','xlsx','xls','zip']))
+                            @elseif(in_array(pathinfo($messages->vendor_file, PATHINFO_EXTENSION), ['pdf','txt','xlsx','xls','zip']))
                         
                                 <div class="form-group">
                                     <a href="{{ asset('public/assets/upload/debit/' . $messages->vendor_file) }}" class="btn-submit" style="text-decoration:none;" download>Download File</a>
@@ -161,12 +175,36 @@
     <div class="container block mt-4 mb-4">
 
             <div class="row">
+                
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="" class="mt-3"><b>Document No (upto 40 character)</b></label>
+                        <input type="text" class="form-control" id="entityName" name="admin_document"
+                             value="{{ $messages->admin_document }}" maxlength='40'>
+                        @error('admin_document')
+                            <span style="color: red">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+                
+                 <div class="col-6">
+                    <div class="form-group">
+                        <label for="" class="mt-3"><b>Amount</b></label>
+                        <input type="number" class="form-control" id="amount" name="admin_amount"
+                               value="{{ old('admin_amount', $messages->admin_amount ?? '') }}" 
+                               placeholder="Enter Amount" step="0.01" onblur="formatAmount(this)">
+                        @error('admin_amount')
+                            <span style="color: red">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+                
                 <div class="form-group pt-3">
                 
                     <label for=""><b>Message (maximum: 300 words)</b></label>
                     <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" name="admin_message"
                         placeholder="Write Your Message">{{ old('admin_message', $messages->admin_message) }}</textarea>
-                    @error('admin_message')
+                     @error('admin_message')
                         <span style="color: red; font-size: 18px">{{ $message }}</span>
                     @enderror
                 </div>
@@ -282,6 +320,15 @@
             newVendorImagePreview.innerHTML = ''; // Clear the preview if the selected file is not an image
         }
     });
+    
+    
+    function formatAmount(input) {
+        // Check if the input has a value
+        if (input.value) {
+            // Parse the value as a float and fix it to two decimal places
+            input.value = parseFloat(input.value).toFixed(2);
+        }
+    }
     
     
     </script>

@@ -18,7 +18,10 @@ return new class extends Migration
 
             $table->integer('user_id')->nullable(true);
             $table->string('gst_number')->nullable(true);
-            $table->string('subject')->nullable(true);
+            $table->string('vendor_document')->nullable(true);
+            $table->string('admin_document')->nullable(true);
+             $table->string('vendor_amount')->nullable(true);
+            $table->string('admin_amount')->nullable(true);
             $table->string('vendor_name')->nullable(true);
             $table->text('vendor_message')->nullable(true);
             $table->string('admin_message')->nullable(true);
