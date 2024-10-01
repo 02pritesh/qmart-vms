@@ -1,8 +1,7 @@
 @extends('admin.main.main')
 
 @section('admin-content')
-<link rel="stylesheet" href="https://cdn.datatables.net/2.1.3/css/dataTables.dataTables.css" />
-<link rel="stylesheet" href="/DataTables/datatables.css" />
+
 
 <style>
     .btn-submit {
@@ -81,7 +80,7 @@
 
 <div class="container block mb-4 mt-3">
 
-    <div class="row mt-4" id="my Table">
+    <div class="row mt-4" >
         <div class="col-md-12 mb-3">
             <div class="card">
                 <div class="card-body">
@@ -97,7 +96,8 @@
                                         <th scope="col">Vendor Name</th>
                                         <th scope="col">Type</th>
                                         <th scope="col">Subject</th>
-                                        <th scope="col">Replied By</th>
+                                        <th scope="col">Q-Mart</th>
+                                        <th scope="col">Vendor</th>
                                         <th scope="col">Status</th>
                                         <!--<th scope="col">Action</th>-->
                                     </tr>
@@ -114,6 +114,7 @@
                                             <td>{{ $item['description'] }}</td>
                                             <td>{{ $item['subject'] }}</td>
                                             <td>{{ $item['approved_by'] }}</td>
+                                            <td>{{ $item['entered_by'] }}</td>
                                             <td><b>{{ $item['status'] }}</b></td>
                                        
                                         </tr>

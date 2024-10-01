@@ -44,6 +44,7 @@ return new class extends Migration
             $table->string('sku_remark')->nullable(true);
             $table->string('erp_code')->nullable(true);
             $table->string('approved_by')->nullable(true);
+             $table->string('entered_by')->nullable(true);
             $table->string('status')->default('Pending');
             
             $table->timestamps();

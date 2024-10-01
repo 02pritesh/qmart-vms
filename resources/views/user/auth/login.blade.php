@@ -158,12 +158,12 @@
         // Fade out success message after 6 seconds
         setTimeout(function() {
             $('#success-message').fadeOut('fast');
-        }, 5000);
+        }, 10000);
 
         // Fade out error message after 6 seconds
         setTimeout(function() {
             $('#error-message').fadeOut('fast');
-        }, 5000);
+        }, 10000);
     </script>
 </body>
 

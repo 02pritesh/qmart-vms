@@ -39,7 +39,7 @@
       <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">
         <!--<a class="navbar-brand brand-logo" href="https://www.qmart.in/wishlist.php" target="_blank"><img src="{{asset('public/assets/upload/header-logo.png')}}" alt="logo" style="width: 50px"></a>-->
         <!--<a class="navbar-brand brand-logo-mini" href="https://www.qmart.in/wishlist.php" target="_blank"><img src="{{asset('public/assets/upload/header-logo.png')}}" alt="logo" ></a>-->
-        <h3 style="color:white; font-size:25px;" class="mt-2">VMS</h3>
+        <h3 style="color:white; font-size:22px;" class="mt-2">VMS&nbsp;</h3>
           <button class="navbar-toggler navbar-toggler align-self-center" type="button"
               data-toggle="minimize">
               <span class="typcn typcn-th-menu"></span>
@@ -63,7 +63,7 @@
     } elseif (Request::is('registration-detail')) {
         $pageTitle = 'Sku Registration';
     } elseif (Request::is('request-report-detail')) {
-        $pageTitle = 'Reconciliations';
+        $pageTitle = 'Request/Report';
     } elseif (Request::is('invoice-mrn-detail')) {
         $pageTitle = 'Invoices/MRN';
     } elseif (Request::is('innvoice-message')) {
@@ -87,11 +87,11 @@
     } elseif (Str::is('edit-vendor-registration-detail*', $currentPath)) {
         $pageTitle = 'Edit Vendor Registration';
     }elseif (Str::is('edit-request-report*', $currentPath)) {
-        $pageTitle = 'Reconciliations';
+        $pageTitle = 'Request/Report';
     }elseif (Str::is('edit-sku-registration-detail*', $currentPath)) {
         $pageTitle = 'Edit Sku Registration';
     }elseif (Str::is('admin-reply*', $currentPath)) {
-        $pageTitle = 'Reconciliations';
+        $pageTitle = 'Request/Report';
     }elseif (Str::is('edit-innvoice-message*', $currentPath)) {
         $pageTitle = 'Invoices/MRN';
     }elseif (Str::is('edit-debit-credit-message*', $currentPath)) {
@@ -237,7 +237,7 @@
 
                
                 <a class="nav-link mb-4" href="#" data-toggle="dropdown" id="profileDropdown">
-                    <img src="{{asset('public/assets/upload/header-logo.png')}}" alt="profile" / style="width:65px; height:55px;">
+                    <img src="{{asset('public/assets/upload/header-logo.png')}}" alt="profile" / style="width:55px; height:55px;">
                    
                 </a>
                 <div class="dropdown-menu dropdown-menu-right navbar-dropdown"

@@ -540,6 +540,17 @@
                 <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" name="vendor_remark"
                     placeholder="Write Your remark">{{ old('vendor_remark',$data->vendor_remark ?? '') }}</textarea>
             </div>
+            
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="" class="mt-3"><b>Entered by</b></label>
+                    <input type="text" class="form-control" id="entityName" name="entered_by" placeholder="Enter your Name"
+                        value="{{ old('entered_by' , $data->entered_by ?? '') }}">
+                    @error('entered_by')
+                        <span style="color: red">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
     </div>
 
 
@@ -549,9 +560,9 @@
 
     
     <button type="submit" class="btn-submit btn-report mr-3 mb-3">Submit</button>
-    @if(!old('subject',$data->subject ?? ''))
-        <button type="reset" class="btn-submit btn-reset btn-danger mb-3">Reset</button>
-    @endif
+    <!--@if(!old('subject',$data->subject ?? ''))-->
+    <!--    <button type="reset" class="btn-submit btn-reset btn-danger mb-3">Reset</button>-->
+    <!--@endif-->
     </form>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

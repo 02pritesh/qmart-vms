@@ -135,6 +135,17 @@
                         @endif
                     </div>   
                     
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="" class="mt-3"><b>Entered by</b></label>
+                            <input type="text" class="form-control" id="entityName" name="entered_by" placeholder="Enter your Name"
+                                value="{{ $messages->entered_by  }}" readonly>
+                            @error('entered_by')
+                                <span style="color: red">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    
                 </div>
             
             @else
@@ -193,16 +204,30 @@
                       
                             
                         @endif
-                    </div>   
+                    </div>  
                     
+                     <div class="col-4">
+                        <div class="form-group">
+                                <label for="" class="mt-3"><b>Entered by</b></label>
+                                <input type="text" class="form-control" id="entityName" name="entered_by" placeholder="Enter your Name"
+                                    value="{{ $messages->entered_by  }}">
+                                @error('entered_by')
+                                    <span style="color: red">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                    @if(!($messages->admin_message))
+                        <button type="submit" class="btn-submit btn-report mr-3 mb-3">Re-Submit</button>
+                        <button type="reset" class="btn-submit btn-reset btn-danger mb-3">Reset</button>
+                    @endif
                 </div>
             
             @endif
             
-            @if(!($messages->admin_message))
-                <button type="submit" class="btn-submit btn-report mr-3 mb-3">Re-Submit</button>
-                <button type="reset" class="btn-submit btn-reset btn-danger mb-3">Reset</button>
-            @endif
+           
             
             
         </form>

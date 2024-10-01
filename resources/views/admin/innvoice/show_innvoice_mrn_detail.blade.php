@@ -96,7 +96,8 @@
                                         <th scope="col">Vendor Name</th>
                                         <th scope="col">Type</th>
                                         <th scope="col">Document No</th>
-                                        <th scope="col">Replied By</th>
+                                        <th scope="col">Q-Mart</th>
+                                        <th scope="col">Vendor</th>
                                         <th scope="col">Status</th>
                                         <!--<th scope="col">Action</th>-->
                                     </tr>
@@ -111,8 +112,9 @@
                                             <td>{{ \Carbon\Carbon::parse($item['created_at'])->format('Y-m-d') }}</td>
                                             <td>{{ $item['vendor_name'] }}</td>
                                             <td>{{ $item['description'] }}</td>
-                                            <td>{{ $item['admin_document'] }}</td>
+                                            <td>{{ $item->admin_document ?? $item->vendor_document }}</td>
                                             <td>{{ $item['approved_by'] }}</td>
+                                            <td>{{ $item['entered_by'] }}</td>
                                             <td><b>{{ $item['status'] }}</b></td>
                                        
                                         </tr>

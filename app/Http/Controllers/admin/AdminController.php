@@ -285,7 +285,7 @@ class AdminController extends Controller
     public function update_sku_registration_detail(Request $request)
     {
         $this->validate($request, [
-            'erp_code.*' => 'required|digits_between:1,11|numeric',
+            'erp_code' => 'required|digits_between:1,11|numeric',
             'approved_by' => 'required',
         ], [
             'erp_code.*.required' => 'The ERP Product Code must be required.',
@@ -397,6 +397,7 @@ class AdminController extends Controller
 
 
             $messages = RequestReport::orderBy('created_at', 'desc')->get();
+            // dd($messages);
             return view('admin.show_request_report_detail', compact('messages'));
         } else {
             return redirect('/');
@@ -512,6 +513,8 @@ class AdminController extends Controller
             if (session()->has('adminloginId')) {
 
                 $messages = InnvoicesMrn::orderBy('created_at', 'desc')->get();
+                // dd($messages);
+                
                 return view('admin.innvoice.show_innvoice_mrn_detail', compact('messages'));
 
             } else {
@@ -597,6 +600,11 @@ class AdminController extends Controller
             $message->admin_message = $request->admin_message;
             $message->approved_by = $request->approved_by;
             
+            
+            if($vendor_name->vendor_message && $request->admin_message){
+                $message->status = 'Aligned';
+            }
+            
             if ($request->hasFile('admin_file')) {
                 $message->admin_file = $request->file('admin_file')->getClientOriginalName();
                 $request->file('admin_file')->move('public/assets/upload/innvoices', $message->admin_file);
@@ -654,8 +662,9 @@ class AdminController extends Controller
                     'admin_message' => 'required',
                     'admin_amount' => 'required|numeric',
                     'admin_document' =>'required|numeric',
-                    'vendor_amount' => 'required|numeric',
                     'vendor_document' =>'required|numeric',
+                    'vendor_amount' => 'required|numeric',
+                    // 'document_no' =>'required|numeric',
                 ],
                 [
                     'vendor_file.*.mimes' => 'Invalid File Formate',
@@ -826,6 +835,10 @@ class AdminController extends Controller
             $message->gst_number = $request->gst_number;
             $message->admin_message = $request->admin_message;
             $message->approved_by = $request->approved_by;
+            
+            if($vendor_name->vendor_message && $request->admin_message){
+                $message->status = 'Aligned';
+            }
             
             if ($request->hasFile('admin_file')) {
                 $message->admin_file = $request->file('admin_file')->getClientOriginalName();
@@ -1050,6 +1063,10 @@ class AdminController extends Controller
             $message->gst_number = $request->gst_number;
             $message->admin_message = $request->admin_message;
             $message->approved_by = $request->approved_by;
+            
+            if($vendor_name->vendor_message && $request->admin_message){
+                $message->status = 'Replied';
+            }
             
             if ($request->hasFile('admin_file')) {
                 $message->admin_file = $request->file('admin_file')->getClientOriginalName();

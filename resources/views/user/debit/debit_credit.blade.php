@@ -123,9 +123,22 @@
                     @error('vendor_file')
                         <span style="color: red; font-size:18px">{{ $message }}</span>
                     @enderror
-                </div>   
+                </div> 
+                
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="" class="mt-3"><b>Entered by</b></label>
+                        <input type="text" class="form-control" id="entityName" name="entered_by" placeholder="Enter your Name"
+                        value="{{ old('entered_by')  }}" >
+                        @error('entered_by')
+                            <span style="color: red">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
 
             </div>
+            
+            
             <button type="submit" class="btn-submit btn-report mr-3 mb-3">Submit</button>
             <button type="reset" class="btn-submit btn-reset btn-danger mb-3">Reset</button>
         </form>

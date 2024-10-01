@@ -66,7 +66,7 @@ class RegisterController extends Controller
             $result = $user->save();
 
             if ($result) {
-                return redirect('/')->with('success', 'Registration Successfully!!');
+                return redirect('/')->with('success', 'Your Registration is Successful, Please contact your Q-Mart Co-ordinate to Activate your account!!');
             } else {
                 return redirect()->back()->with('error', 'Registration Failed!!');
             }
@@ -103,7 +103,7 @@ class RegisterController extends Controller
             return redirect('edit-user-registration')->with('success','User Registration Update Successfully!');
         }
         else{
-            return redirect('edit-user-registration')->with('fail','Does not Update User Registration!');
+            return redirect('edit-user-registration')->with('fail','Could not Update User Registration!');
         }
     }
 }

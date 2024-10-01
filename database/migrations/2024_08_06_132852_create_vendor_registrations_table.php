@@ -52,6 +52,7 @@ return new class extends Migration
             $table->string('description')->default('Vendor Registration');
             $table->string('vendor_remark')->nullable(true);
             $table->string('approved_by')->nullable(true);
+             $table->string('entered_by')->nullable(true);
             $table->string('status')->default('Pending');
 
             $table->timestamps();

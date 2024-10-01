@@ -87,7 +87,7 @@
                         <input type="hidden" name="id" value="{{ $messages->id }}">
     
                         <input type="text" class="form-control" id="entityName" value="{{ $messages->vendor_name }}"
-                            name="vendor_name" >
+                            name="vendor_name" readonly>
     
                     </div>
                 </div>

@@ -105,6 +105,7 @@ class UserController extends Controller
             // 'IGST_Code' => 'required',
             'cess_percentage' => 'nullable|numeric',
             'additional_cess' => 'nullable|numeric',
+            'entered_by' => 'required',
 
         ], [
             'EAN_Code.*.required' => 'The EAN Code field is required.',
@@ -172,6 +173,7 @@ class UserController extends Controller
             $data->gst_price = $request->gst_price;
             $data->basic_cost = $request->basic_cost;
             $data->sku_remark = $request->sku_remark;
+            $data->entered_by = $request->entered_by;
 
             $data->save();
 
@@ -181,7 +183,7 @@ class UserController extends Controller
             $errorMessage = $exception->getMessage();
             $shortMessage = strtok($errorMessage, '('); // This will truncate the message at the first '('
 
-            return redirect('vendor-show-sku-registration-detail')->with('error', 'An error occurred: ' . $shortMessage);
+            return redirect()->back()->with('error', 'An error occurred: ' . $shortMessage);
         }
     }
     
@@ -205,6 +207,7 @@ class UserController extends Controller
             'HSN_Code' => 'required|digits_between:6,8',
             'cess_percentage' => 'nullable|numeric',
             'additional_cess' => 'nullable|numeric',
+            'entered_by' => 'required',
 
         ], [
             'EAN_Code.*.required' => 'The EAN Code field is required.',
@@ -274,6 +277,7 @@ class UserController extends Controller
             $data->gst_price = $request->gst_price;
             $data->basic_cost = $request->basic_cost;
             $data->sku_remark = $request->sku_remark;
+            $data->entered_by = $request->entered_by;
 
             // dd($data);
             $data->save();
@@ -447,10 +451,11 @@ class UserController extends Controller
         $this->validate($request, [
             'vendor_file' => 'nullable|mimes:pdf,png,jpg,xlsx,xls,zip|max:5120',
             'subject' => 'nullable',
-            'vendor_message' => 'required'
+            'vendor_message' => 'required',
+            'entered_by' => 'required',
 
         ], [
-            'vendor_file' => 'Invalide File Formate'
+            'vendor_file' => 'Invalid File Format'
         ]);
 
         try {
@@ -460,7 +465,7 @@ class UserController extends Controller
             $data->user_id = session()->get('vendor_id');
             $data->subject = $request->subject;
             $data->vendor_name = $request->vendor_name;
-            $data->approved_by = $request->vendor_name;
+            $data->entered_by = $request->entered_by;
             $data->vendor_message = $request->vendor_message;
             $data->description = 'Request Report';
 
@@ -498,7 +503,8 @@ class UserController extends Controller
           $this->validate($request, [
             'vendor_file' => 'nullable|mimes:pdf,png,jpg,xlsx,xls,zip|max:5120',
             'subject' => 'nullable',
-            'vendor_message' => 'required'
+            'vendor_message' => 'required',
+            'entered_by' => 'required'
 
         ], [
             'vendor_file' => 'Invalide File Formate'
@@ -513,7 +519,7 @@ class UserController extends Controller
             $data->vendor_name = $request->vendor_name;
             $data->vendor_message = $request->vendor_message;
             $data->description = 'Request Report';
-
+            $data->entered_by = $request->entered_by;
             $vendor = session()->get('vendor_id');
             $vendor = User::where('id', $vendor)->first();
             $gstin = $vendor->gstin;
@@ -669,7 +675,8 @@ class UserController extends Controller
                 'vendor_file' => 'nullable|mimes:pdf,png,jpg,xlsx,xls,zip|max:5120',
                 'vendor_document' => 'required|numeric',
                 'vendor_amount' => 'required|numeric',
-                'vendor_message' => 'required'
+                'vendor_message' => 'required',
+                'entered_by' => 'required',
 
                 ], [
                     'vendor_file.*.mimes' => 'Invalide File Formate',
@@ -684,7 +691,7 @@ class UserController extends Controller
             $data->vendor_amount = $request->vendor_amount;
             $data->vendor_name = $request->vendor_name;
             $data->vendor_message = $request->vendor_message;
-            $data->approved_by = $request->vendor_name;
+            $data->entered_by = $request->entered_by;
 
             $vendor = session()->get('vendor_id');
             $vendor = User::where('id', $vendor)->first();
@@ -696,6 +703,9 @@ class UserController extends Controller
                 $data->vendor_file = $request->file('vendor_file')->getClientOriginalName();
                 $request->file('vendor_file')->move('public/assets/upload/innvoices', $data->vendor_file);
             }
+            
+            
+            
 
             // dd($data);
             $result = $data->save();
@@ -720,7 +730,8 @@ class UserController extends Controller
                 'vendor_file' => 'nullable|mimes:pdf,png,jpg,xlsx,xls,zip|max:5120',
                 'vendor_document' => 'required|numeric',
                 'vendor_amount' => 'required|numeric',
-                'vendor_message' => 'required'
+                'vendor_message' => 'required',
+                'entered_by' => 'required',
 
                 ], [
                     'vendor_file.*.mimes' => 'Invalide File Formate',
@@ -736,6 +747,7 @@ class UserController extends Controller
             $data->vendor_amount = $request->vendor_amount;
             $data->vendor_name = $request->vendor_name;
             $data->vendor_message = $request->vendor_message;
+            $data->entered_by = $request->entered_by;
             
            
 
@@ -830,6 +842,7 @@ class UserController extends Controller
                     'vendor_amount' => 'required|numeric',
                     'vendor_message' => 'required',
                     'vendor_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120',
+                    'entered_by' => 'required',
                     // 'admin_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120'
                 ],
                 [
@@ -846,8 +859,11 @@ class UserController extends Controller
             $data->vendor_amount = $request->vendor_amount;
             $data->vendor_message = $request->vendor_message;
             $data->vendor_name = $request->vendor_name;
+            $data->entered_by = $request->entered_by;
     
-    
+            if($data->admin_message && $request->vendor_message){
+                $data->status = 'Aligned';
+            }
     
             if ($request->hasFile('vendor_file')) {
                 $data->vendor_file = $request->file('vendor_file')->getClientOriginalName();
@@ -913,6 +929,7 @@ class UserController extends Controller
                 'vendor_message' => 'required',
                 'vendor_document' => 'required|numeric',
                 'vendor_amount' => 'required|numeric',
+                'entered_by' => 'required',
                 
 
                 ], [
@@ -928,7 +945,7 @@ class UserController extends Controller
             $data->vendor_amount = $request->vendor_amount;
             $data->vendor_name = $request->vendor_name;
             $data->vendor_message = $request->vendor_message;
-            $data->approved_by = $request->vendor_name;
+            $data->entered_by = $request->entered_by;
            
 
             $vendor = session()->get('vendor_id');
@@ -966,6 +983,7 @@ class UserController extends Controller
                 'vendor_message' => 'required',
                 'vendor_document' => 'required|numeric',
                 'vendor_amount' => 'required|numeric',
+                'entered_by' => 'required',
                 
 
                 ], [
@@ -981,7 +999,7 @@ class UserController extends Controller
             $data->vendor_amount = $request->vendor_amount;
             $data->vendor_name = $request->vendor_name;
             $data->vendor_message = $request->vendor_message;
-           
+            $data->entered_by = $request->entered_by;
 
             $vendor = session()->get('vendor_id');
             $vendor = User::where('id', $vendor)->first();
@@ -1067,6 +1085,7 @@ class UserController extends Controller
                     'vendor_amount' => 'required|numeric',
                     'vendor_message' => 'required',
                     'vendor_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120',
+                    'entered_by' => 'required'
                     // 'admin_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120'
                 ],
                 [
@@ -1083,8 +1102,11 @@ class UserController extends Controller
             $data->vendor_amount = $request->vendor_amount;
             $data->vendor_message = $request->vendor_message;
             $data->vendor_name = $request->vendor_name;
+            $data->entered_by = $request->entered_by;
     
-    
+            if($data->admin_message && $request->vendor_message){
+                $data->status = 'Aligned';
+            }
     
             if ($request->hasFile('vendor_file')) {
                 $data->vendor_file = $request->file('vendor_file')->getClientOriginalName();
@@ -1149,7 +1171,8 @@ class UserController extends Controller
         $this->validate($request, [
                 'vendor_file' => 'nullable|mimes:pdf,png,jpg,xlsx,xls,zip|max:5120',
                 'subject' => 'nullable',
-                'vendor_message' => 'required'
+                'vendor_message' => 'required',
+                'entered_by' => 'required'
 
                 ], [
                     'vendor_file.*.mimes' => 'Invalide File Formate',
@@ -1163,7 +1186,7 @@ class UserController extends Controller
             $data->subject = $request->subject;
             $data->vendor_name = $request->vendor_name;
             $data->vendor_message = $request->vendor_message;
-            $data->approved_by = $request->vendor_name;
+            $data->entered_by = $request->entered_by;
            
 
             $vendor = session()->get('vendor_id');
@@ -1200,7 +1223,8 @@ class UserController extends Controller
          $this->validate($request, [
                 'vendor_file' => 'nullable|mimes:pdf,png,jpg,xlsx,xls,zip|max:5120',
                 'subject' => 'nullable',
-                'vendor_message' => 'required'
+                'vendor_message' => 'required',
+                'entered_by' => 'required',
 
                 ], [
                     'vendor_file.*.mimes' => 'Invalide File Formate',
@@ -1214,6 +1238,7 @@ class UserController extends Controller
             $data->subject = $request->subject;
             $data->vendor_name = $request->vendor_name;
             $data->vendor_message = $request->vendor_message;
+            $data->entered_by = $request->entered_by;
            
 
             $vendor = session()->get('vendor_id');
@@ -1303,7 +1328,8 @@ class UserController extends Controller
                 $request,
                 [
                     'vendor_file' => 'nullable|mimes:pdf,png,jpg,zip,xls,xlsx|max:5120',
-                    'vendor_message' => 'required'
+                    'vendor_message' => 'required',
+                    'entered_by' => 'required',
                 ],
                 [
                     'vendor_file.*.mimes' => 'Invalid File Formate',
@@ -1317,8 +1343,11 @@ class UserController extends Controller
           
             $data->vendor_message = $request->vendor_message;
             $data->vendor_name = $request->vendor_name;
+             $data->entered_by = $request->entered_by;
     
-    
+            if($data->admin_message && $request->vendor_message){
+                $data->status = 'Replied';
+            }
     
             if ($request->hasFile('vendor_file')) {
                 $data->vendor_file = $request->file('vendor_file')->getClientOriginalName();

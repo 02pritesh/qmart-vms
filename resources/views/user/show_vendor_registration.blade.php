@@ -93,7 +93,7 @@
     <!--<h3 class="text-center" style="color:#000;font-family: Silka-Black;"><b>Edit Vendor Registration Details</b></h3>-->
     <a href="{{url('vendor-show-vendor-registration-detail')}}" class="btn-submit ml-3" style="text-decoration: none; padding:4px 14px;"><i class="fa-solid fa-left-long"></i></a>
 
-    <div class="container block mt-4 mb-4">
+    <div class="container block mt-4 mb-2">
         <!--<form action="{{ url('edit-vendor-registration-detail') }}" method="POST" enctype="multipart/form-data">-->
             @csrf
             
@@ -494,6 +494,16 @@
         <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" name="vendor_remark"  readonly>{{ $vendorDetail->vendor_remark }}</textarea>
      </div>
     </div>
+    
+    <div class="col-3 pb-1">
+        <div class="form-group">
+          <label for="" ><b>Entered by</b></label>
+          <input type="text" class="form-control" id="entityName" name="entered_by"  value="{{$vendorDetail->entered_by}}" readonly>
+          @error('entered_by')
+          <span style="color: red">{{$message}}</span>
+          @enderror           
+        </div>
+     </div>
   
 
 

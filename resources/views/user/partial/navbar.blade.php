@@ -39,7 +39,7 @@
 <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
   <div class="navbar-brand-wrapper d-flex justify-content-center">
     <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">
-        <h3 style="color:white; font-size:25px;" class="mt-2">VMS</h3>
+        <h3 style="color:white; font-size:25px;" class="mt-2">VMS&nbsp;</h3>
       <!--<a class="navbar-brand brand-logo" href="https://www.qmart.in/wishlist.php" target="_blank"><img src="{{asset('public/assets/upload/header-logo.png')}}" alt="logo" style="width: 50px"></a>-->
       <!--<a class="navbar-brand brand-logo-mini" href="https://www.qmart.in/wishlist.php" target="_blank"><img src="{{asset('public/assets/upload/header-logo.png')}}" alt="logo" ></a>-->
       <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -66,11 +66,11 @@
     } elseif (Str::is('vendor-show-sku-registration-detail*', $currentPath)) {
         $pageTitle = 'Sku Registration';
     } elseif ($currentPath == 'vendor-show-request-report-registration-detail') {
-        $pageTitle = 'Reconciliations';
+        $pageTitle = 'Request/Report';
     }elseif ($currentPath == 'vendor-show-innvoices-detail') {
         $pageTitle = 'Invoices/MRN';
     } elseif ($currentPath == 'request-report') {
-        $pageTitle = 'Reconciliations';
+        $pageTitle = 'Request/Report';
     }elseif ($currentPath == 'debit-credit') {
         $pageTitle = 'Debit/Credit Note';
     }elseif ($currentPath == 'vendor-show-credit-detail') {
@@ -88,7 +88,7 @@
     }elseif ($currentPath == 'vendor-show-payment-detail') {
         $pageTitle = 'Payment Follow-Up';
     } elseif (Str::is('vendor-show-message*', $currentPath)) {
-        $pageTitle = 'Reconciliations';
+        $pageTitle = 'Request/Report';
     }elseif (Str::is('show-vendor-registration*', $currentPath)) {
         $pageTitle = 'Vendor Registration';
     }
@@ -133,7 +133,7 @@
       <div class="button d-flex justify-content-end gap-2">
         <a href="{{url('vendor-registration')}}"  id="new_register">New Vendor Registration</a>
         <a href="{{url('sku-registration')}}" id="new_sku">New SKU Registration</a>
-        <a href="{{url('request-report')}}" id="request">New Reconciliations</a>
+        <a href="{{url('request-report')}}" id="request">New Request/Report</a>
         <a href="{{url('innvoices-mrn')}}" id="innvoice">New Invoice/MRN</a>
         <a href="{{url('debit-credit')}}" id="debit_credit">New Debit/Credit Note</a>
         <a href="{{url('payment-follow')}}" id="payment">New Payment Follow-up</a>
@@ -142,7 +142,7 @@
     <ul class="navbar-nav navbar-nav-right">
       <li class="nav-item nav-profile dropdown">
         <a class="nav-link mb-4" href="#" data-toggle="dropdown" id="profileDropdown" >
-          <img src="{{asset('public/assets/upload/header-logo.png')}}" alt="profile"/ style="width:65px; height:55px;">
+          <img src="{{asset('public/assets/upload/header-logo.png')}}" alt="profile"/ style="width:55px; height:55px;">
           {{-- <span class="nav-profile-name">Eugenia Mullins</span> --}}
         </a>
         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">

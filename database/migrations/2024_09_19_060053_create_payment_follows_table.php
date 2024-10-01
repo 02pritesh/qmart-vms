@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('admin_file')->nullable(true);
             $table->string('description')->default('Payment Follow-Up');
             $table->string('approved_by')->nullable(true);
+            $table->string('entered_by')->nullable(true);
             $table->string('status')->default('Pending');
             $table->timestamps();
         });

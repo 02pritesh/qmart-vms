@@ -94,9 +94,10 @@
                                     <th scope="col">Vendor Name</th>
                                     <th scope="col">GST Number</th>
                                     <th scope="col">Type</th>
-                                    <th scope="col">Subject</th>
+                                    <th scope="col">Subject/Document No</th>
                                     
-                                     <th scope="col">Replied By</th>
+                                     <th scope="col">Q-Mart</th>
+                                     <th scope="col">Vendor</th>
                                     <th scope="col">Status</th>
                                 </tr>
                             </thead>
@@ -117,8 +118,11 @@
                                             {{$item->subject}}
                                         </td>
                                         
-                                         <td>
+                                        <td>
                                             {{$item->approved_by}}
+                                        </td>
+                                        <td>
+                                            {{$item->entered_by}}
                                         </td>
                                         <td>
                                             <!--@if ($item->status == 'Pending' && $item->description == 'Request Report')-->
@@ -154,10 +158,13 @@
                                         <td>
                                             {{ $item['description'] }}
                                         </td>
-                                        <td> {{$item->subject}}</td>
+                                        <td> {{$item->product_name}}</td>
                                        
                                           <td>
                                             {{$item->approved_by}}
+                                        </td>
+                                        <td>
+                                            {{$item->entered_by}}
                                         </td>
                                         <td>
                                         
@@ -200,6 +207,9 @@
                                           <td>
                                             {{$item->approved_by}}
                                         </td>
+                                        <td>
+                                            {{$item->entered_by}}
+                                        </td>
                                         <td> 
                                            <b>{{$item->status}}</b>
 
@@ -236,10 +246,13 @@
                                         <td>
                                             {{ $item['description'] }}
                                         </td>
-                                        <td>{{$item->admin_document}}</td>
+                                        <td>{{$item->admin_document ?? $item->vendor_document}}</td>
                                      
                                           <td>
                                             {{$item->approved_by}}
+                                        </td>
+                                        <td>
+                                            {{$item->entered_by}}
                                         </td>
                                         <td> 
                                            <b>{{$item->status}}</b>
@@ -277,10 +290,13 @@
                                         <td>
                                             {{ $item['description'] }}
                                         </td>
-                                        <td>{{$item->admin_document}}</td>
+                                        <td>{{$item->admin_document ?? $item->vendor_document}}</td>
                                      
                                           <td>
                                             {{$item->approved_by}}
+                                        </td>
+                                        <td>
+                                            {{$item->entered_by}}
                                         </td>
                                         <td> 
                                            <b>{{$item->status}}</b>
@@ -322,6 +338,9 @@
                                      
                                           <td>
                                             {{$item->approved_by}}
+                                        </td>
+                                        <td>
+                                            {{$item->entered_by}}
                                         </td>
                                         <td> 
                                            <b>{{$item->status}}</b>

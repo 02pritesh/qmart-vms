@@ -414,6 +414,17 @@
                 <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" name="sku_remark"
                     placeholder="Write your remark">{{ old('sku_remark') }}</textarea>
             </div>
+            
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="" class="mt-3"><b>Entered by</b></label>
+                    <input type="text" class="form-control" id="entityName" name="entered_by" placeholder="Enter your Name"
+                        value="{{ old('entered_by' , $data->entered_by ?? '') }}">
+                    @error('entered_by')
+                        <span style="color: red">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
 
        
 
@@ -421,8 +432,8 @@
 
             <!--<button type="button" id="addRow" class="btn-submit add-row mt-3"><b>Add More Rows</b></button>-->
             <hr>
-            <button type="submit" class="btn-submit mr-3 mb-3">Submit SKU</button>
-            <button type="reset" class="btn-submit btn-reset mb-3">Reset</button>
+            <button type="submit" class="btn-submit mr-3 mb-3">Submit</button>
+            <!--<button type="reset" class="btn-submit btn-reset mb-3">Reset</button>-->
         </form>
     </div>
 

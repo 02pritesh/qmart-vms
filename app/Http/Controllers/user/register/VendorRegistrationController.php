@@ -164,6 +164,7 @@ public function add_vendor_registration(Request $request)
                 'beneficiary_account_number' => 'required|numeric',
                 'branch_ifsc_code' => 'required|string',
                 'listing_charges' => 'required|string',
+                'entered_by' => 'required'
             ], [
                 'vendor_name.required' => 'The Vendor Name field is required.',
                 'email.email' => 'The Email must be a valid email address.',
@@ -219,6 +220,7 @@ public function add_vendor_registration(Request $request)
             $data->q_mart_retail = $request->q_mart_retail;
             $data->vendor_remark = $request->vendor_remark;
             $data->description = 'Vendor Registration';
+            $data->entered_by = $request->entered_by;
 
             // Save the data to the database
             $result = $data->save();

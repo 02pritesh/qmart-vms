@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('gst_number')->nullable(true);
             $table->string('vendor_document')->nullable(true);
             $table->string('admin_document')->nullable(true);
+            //   $table->string('document_no')->nullable(true);
             $table->string('vendor_amount')->nullable(true);
             $table->string('admin_amount')->nullable(true);
             $table->string('vendor_name')->nullable(true);
@@ -28,6 +29,7 @@ return new class extends Migration
             $table->string('admin_file')->nullable(true);
             $table->string('description')->default('Debit/Credit Note');
             $table->string('approved_by')->nullable(true);
+            $table->string('entered_by')->nullable(true);
             $table->string('status')->default('Pending');
             $table->timestamps();
         });

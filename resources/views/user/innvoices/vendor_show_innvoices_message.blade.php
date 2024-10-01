@@ -143,9 +143,7 @@
                         @endif
                     </div>
 
-                    <div class="form-group">
-
-                    </div>
+            
 
                 </div>
 
@@ -269,6 +267,36 @@
                             <input type="file" name="vendor_file" class="form-control">
                         @endif
                     </div>
+                    
+                    @if(!($messages->entered_by))
+                    
+                     <div class="col-4">
+                        <div class="form-group">
+                                <label for="" class="mt-3"><b>Entered by</b></label>
+                                <input type="text" class="form-control" id="entityName" name="entered_by" placeholder="Enter your Name"
+                                    value="{{ $messages->entered_by  }}">
+                                @error('entered_by')
+                                    <span style="color: red">{{ $message }}</span>
+                                @enderror
+                        </div>
+                    </div>
+                    
+                    @else
+                    
+                     <div class="col-4">
+                        <div class="form-group">
+                                <label for="" class="mt-3"><b>Entered by</b></label>
+                                <input type="text" class="form-control" id="entityName" name="entered_by" placeholder="Enter your Name"
+                                    value="{{ $messages->entered_by  }}" readonly>
+                                @error('entered_by')
+                                    <span style="color: red">{{ $message }}</span>
+                                @enderror
+                        </div>
+                    </div>
+                    
+                    @endif
+                    
+                   
 
 
 
@@ -355,6 +383,17 @@
                                 <input type="file" name="vendor_file" class="form-control">
                             @endif
                         </div>
+                        
+                         <div class="col-4">
+                            <div class="form-group">
+                                    <label for="" class="mt-3"><b>Entered by</b></label>
+                                    <input type="text" class="form-control" id="entityName" name="entered_by" placeholder="Enter your Name"
+                                        value="{{ $messages->entered_by  }}" readonly>
+                                    @error('entered_by')
+                                        <span style="color: red">{{ $message }}</span>
+                                    @enderror
+                            </div>
+                        </div>
                     </div>
                 
                 @else
@@ -424,6 +463,17 @@
                                 @endif
                           
                             @endif
+                        </div>
+                        
+                        <div class="col-4">
+                            <div class="form-group">
+                                    <label for="" class="mt-3"><b>Entered by</b></label>
+                                    <input type="text" class="form-control" id="entityName" name="entered_by" placeholder="Enter your Name"
+                                        value="{{ $messages->entered_by  }}" >
+                                    @error('entered_by')
+                                        <span style="color: red">{{ $message }}</span>
+                                    @enderror
+                            </div>
                         </div>
                     </div>
                     

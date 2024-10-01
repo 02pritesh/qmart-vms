@@ -1217,7 +1217,7 @@ $(document).ready(function() {
         ],
         order: [[0, 'desc']],  // Sort by the date-time column in descending order
         paging: true,  // Enable pagination
-        pageLength: 10,  // Set the number of entries per page
+        pageLength: 25,  // Set the number of entries per page
     });
 });
 

@@ -416,6 +416,17 @@
                 <label for="exampleFormControlTextarea1"><b>Remark (maximum: 300 words)</b></label>
                 <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" name="sku_remark" readonly>{{ $skuDetail->sku_remark }}</textarea>
             </div>
+            
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="" class="mt-3"><b>Entered by</b></label>
+                    <input type="text" class="form-control" id="entityName" name="entered_by" placeholder="Enter your Name"
+                        value="{{ $skuDetail->entered_by }}" readonly>
+                    @error('entered_by')
+                        <span style="color: red">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
 
 
 
@@ -709,6 +720,17 @@
             <div class="form-group">
                 <label for="exampleFormControlTextarea1"><b>Remark (maximum: 300 words)</b></label>
                 <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" name="sku_remark" >{{ $skuDetail->sku_remark }}</textarea>
+            </div>
+            
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="" class="mt-3"><b>Entered by</b></label>
+                    <input type="text" class="form-control" id="entityName" name="entered_by" placeholder="Enter your Name"
+                        value="{{ $skuDetail->entered_by }}">
+                    @error('entered_by')
+                        <span style="color: red">{{ $message }}</span>
+                    @enderror
+                </div>
             </div>
 
 
